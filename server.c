@@ -8,7 +8,8 @@
 #include <math.h>
 #include <endian.h>    // __BYTE_ORDER __LITTLE_ENDIAN
 #include <byteswap.h>  // bswap_64()
-
+#include <time.h>
+#include <locale.h>
 
 #define BUFFER_SIZE 1024
 #define REQ_LENGTH 8
@@ -20,6 +21,8 @@
 void square_root_handler(int, uint32_t);
 
 void root_square_computer(int, uint64_t*, size_t );
+
+void date_handler(int, uint32_t);
 
 
 
@@ -47,7 +50,7 @@ int main () {
 
    while (1) {
 
-       printf ("server waiting for next connection!\n");
+       printf ("Server waiting for next connection!\n");
 
        /*  Accept connection.  */
 
@@ -56,7 +59,7 @@ int main () {
                (struct sockaddr *) &client_address,
                &client_len);
 
-	printf("New connection!");
+	printf("New connection!\n");
 
        /*  Fork to create a process for this client and perform a test to see
            whether we're the parent or the child.  */
@@ -86,15 +89,16 @@ int main () {
 
 		   switch(selector_l) {
 		       case 0xFFul:
-			 {
+			    printf("Square root request!\n");
+			    // process the square roto request
 		       	    square_root_handler(client_sockfd, req_id);
-			 }
-			break;
-		       //case 0xFF0000FFul:
-		           // process the time request
-
+			    break;
+			case 0x2ul:
+			    //printf("Received the date request!\n");
+			    date_handler(client_sockfd, req_id);
+			    break;
 		       default:
-		           printf("Wrong request");
+		           printf("Wrong request\n");
 		           exit(1);
 		   }
 		}
@@ -147,6 +151,45 @@ void root_square_computer(int client_socket, uint64_t* result, size_t size) {
    uint64_t network_result = htobe64(output_value);
    memcpy(result, &network_result, size);
 
+}
+
+
+void date_handler(int client_sockfd, uint32_t req_id) {
+	
+
+    time_t sekund;
+    struct tm *wsk_strukt;
+    char napis[100];
+
+    setlocale (LC_ALL, "pl_PL");  
+
+    time (&sekund);
+    wsk_strukt = localtime (&sekund);
+    strftime (napis, 100, "Current server date: %c", wsk_strukt);   // tutaj %c oznacza datę i czas
+  	
+	// encode the response
+	char response_encoded[12+sizeof(napis)];
+	// request code
+	uint32_t response_code = 0xFF000002ul;
+	uint32_t n_response_code = htonl(response_code);
+	memcpy(response_encoded, &n_response_code, sizeof(uint32_t));
+	
+	// code req_id	
+	memcpy(response_encoded + sizeof(uint32_t), &req_id, sizeof(uint32_t)); 
+
+	// code date length
+	uint32_t date_length = sizeof(napis);
+	uint32_t n_date_length = htonl(date_length);
+	memcpy(response_encoded + (2 * sizeof(uint32_t)), &n_date_length, sizeof(uint32_t)); 
+
+	// code the date
+	// https://stackoverflow.com/questions/1568057/ascii-strings-and-endianness 
+	// string are not affected by endianess
+	memcpy(response_encoded + (3 * sizeof(uint32_t)), napis, sizeof(napis));
+
+
+	// write
+	write(client_sockfd, response_encoded, (16 + sizeof(napis))* sizeof(char));
 }
 
 

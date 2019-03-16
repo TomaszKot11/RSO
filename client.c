@@ -10,9 +10,11 @@
 #include <byteswap.h>
 
 
+//TODO: request_id!
 
 void print_menu();
 void perform_square_root_request(int);
+void perform_date_request(int);
 
 
 int main () {
@@ -42,12 +44,14 @@ int main () {
 		    printf("Your option: ");
      	            scanf("%d", &request_no);
 		  } while(request_no < 1 && request_no > 3);
+		
 
 		switch(request_no) {
 	          case 1:
-			perform_square_root_request(sockfd);
+			perform_date_request(sockfd);
 			break;
 		  case 2:
+			perform_square_root_request(sockfd);
 			break;
 		  case 3:
 			should_run = 0;
@@ -55,8 +59,6 @@ int main () {
 		  default:
 			printf("\nNo such option!\n");
 		}
-
-	
 		//TODO: decode the answer and check req_id
 	}	
    close (sockfd);
@@ -94,11 +96,19 @@ void perform_square_root_request(int sockfd) {
 	memcpy(request_coded + sizeof(n_request_code), &n_request_id , sizeof(n_request_id));
 	memcpy(request_coded + (sizeof(n_request_code) + sizeof(n_request_id)), &n_my_digit_bits, sizeof(n_my_digit_bits));
 
-	write(sockfd, request_coded, 16 * sizeof(char));
+	ssize_t no_bytes = write(sockfd, request_coded, 16 * sizeof(char));
+	if(no_bytes < 16 * sizeof(char)) {
+		printf("Error while writing data!");
+		exit(1);
+	}
 
 	memset(request_coded, '\0', 16 * sizeof(char));
 
-	read(sockfd, request_coded, 16 * sizeof(char));
+	no_bytes = read(sockfd, request_coded, 16 * sizeof(char));
+	if(no_bytes < 16 * sizeof(char)) {
+		printf("Error reading data!");
+		exit(1);	
+	}
 
 	uint64_t result;
 	memcpy(&result, request_coded + (8 * sizeof(char)), sizeof(result));
@@ -108,6 +118,48 @@ void perform_square_root_request(int sockfd) {
 	memcpy(&d_result, &h_result, sizeof(d_result));
 	printf("\n The result is: %lf\n", d_result);
 }
+
+
+
+void perform_date_request(int sockfd) {
+	uint32_t request_code = 2;
+	uint32_t request_id = 1;
+	char request_coded[8];
+	// code for network transfer
+	uint32_t n_request_code = htonl(request_code);
+	uint32_t n_request_id = htonl(request_id);
+
+	memcpy(request_coded, &n_request_code, sizeof(n_request_code));
+	memcpy(request_coded + sizeof(n_request_code), &n_request_id , sizeof(n_request_id));
+	
+	ssize_t no_bytes = write(sockfd, request_coded, 8 * sizeof(char));
+	if(no_bytes < 8 * sizeof(char)) {
+		printf("Error while writing data!");
+		exit(1);
+	}
+
+
+	// read the response!
+
+	// read first 12 bytes to get the legth of the string
+	uint32_t req_code;
+	uint32_t req_id;
+	uint32_t data_length;
+
+	read(sockfd, &req_code, sizeof(uint32_t));
+	read(sockfd, &req_id, sizeof(uint32_t));
+	read(sockfd, &data_length, sizeof(uint32_t));
+	
+	uint32_t h_data_length = ntohl(data_length);		
+	
+	char* date = malloc(h_data_length * sizeof(char));
+
+	read(sockfd, date, h_data_length * sizeof(char));
+	
+	printf("\nDate received: %s\n", date);
+
+	free(date);
+}	
 
 
 
