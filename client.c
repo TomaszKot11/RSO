@@ -12,28 +12,6 @@
 
 
 
-int read_wrapper(int client_socket, void* buffer, size_t size) {
-
-   // read 16 bytes to determine valid
-   ssize_t no_bytes = read(client_socket, &buffer, size);
-   if(no_bytes < size) {
-       // error
-       return -1;
-   }
-
-   return 1;
-}
-
-int write_wrapper(int client_socket, void* buffer, size_t size) {
-
-	ssize_t no_bytes = write(client_socket, &buffer, size);
-	if(no_bytes < size) {
-		return -1;
-	}
-
-	return 1;
-}
-
 void print_menu() {
 	printf("Select option");
 	printf("1 - square root");
