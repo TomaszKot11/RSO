@@ -47,25 +47,30 @@ int main () {
 		    print_menu();
 		    printf("Your option: ");
      	            scanf("%d", &request_no);
-		  } while(request_no < 1 && request_no > 3);
+		  
 		
 
-		switch(request_no) {
-	          case 1:
-			perform_date_request(sockfd);
-			break;
-		  case 2:
-			perform_square_root_request(sockfd);
-			break;
-		  case 3:
-			should_run = 0;
-		       break;
-		  default:
-			printf("\nNo such option!\n");
-		}
+			switch(request_no) {
+			  case 1:
+				perform_date_request(sockfd);
+				break;
+			  case 2:
+				perform_square_root_request(sockfd);
+				break;
+			  case 3:
+				should_run = 0;
+			       break;
+			  default:
+				{
+					printf("No such option!");
+					printf("Inside the loop");
+				}
+				
+			}
+		} while(request_no < 1 && request_no > 3);
 		//TODO: check req_id
 		//TODO: make separte thread to send the request
-	
+	printf("outside the loop!");
 	uint32_t answer_code, request_id;
 	uint32_t h_answer_code, h_request_id;
         // decode the request_code
@@ -86,7 +91,7 @@ int main () {
 	// decode the reuqest_id
 	h_request_id = ntohl(request_id);
 
-	printf("\n The answer_code is %x and the requeset_id is: %d \n", h_answer_code, h_request_id);
+
 	
 	switch(h_answer_code) {
 		case 0xFF0000FFul:
@@ -95,6 +100,7 @@ int main () {
 			break;
 		case 0xFF000002ul:
 			// date answer 
+			proceed_date_answer(sockfd);
 			break;
 		default:
 			printf("Wrong answer code!");

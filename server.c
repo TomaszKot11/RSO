@@ -146,7 +146,7 @@ void root_square_computer(int client_socket, uint64_t* result, size_t size) {
 
    double d_result = sqrt(value);
 
-   printf("\nThe root square result double is: %lf\n", d_result);
+   //printf("\nThe root square result double is: %lf\n", d_result);
 
 
    uint64_t output_value;
