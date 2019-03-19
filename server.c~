@@ -15,8 +15,6 @@
 #define REQ_LENGTH 8
 
 
-//TODO: ignorowanie sygnałów
-
 
 void square_root_handler(int, uint32_t);
 
@@ -117,6 +115,8 @@ void square_root_handler(int client_sockfd, uint32_t req_id) {
 	    char result_coded[16];
             // code the result
 	    uint32_t root_code_result = htonl(0xFF0000FFul);
+	
+
             memcpy(result_coded, &root_code_result, sizeof(uint32_t));
 	    memcpy(result_coded + sizeof(uint32_t), &req_id, sizeof(uint32_t));
 	    memcpy(result_coded + (2 * sizeof(uint32_t)), &result, sizeof(uint64_t)); 
@@ -143,7 +143,11 @@ void root_square_computer(int client_socket, uint64_t* result, size_t size) {
    uint64_t value_for_host = be64toh(number);
    double value = 0.0;
    memcpy(&value, &value_for_host, sizeof(value_for_host));
+
    double d_result = sqrt(value);
+
+   printf("\nThe root square result double is: %lf\n", d_result);
+
 
    uint64_t output_value;
    memcpy(&output_value, &d_result, sizeof(uint64_t));
