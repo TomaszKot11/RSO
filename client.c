@@ -13,6 +13,7 @@
 
 //TODO: when 3 is clicked the program stops!
 // TODO: fix response code!
+//TODO: use mutexes!
 
 void print_menu();
 void perform_square_root_request(int);
@@ -75,7 +76,6 @@ int main () {
 				perform_date_request(sockfd);
 				break;
 			  case 3:
-				printf("Bye!");
 				should_run = 0;
 			       	break;
 			  default:
