@@ -9,6 +9,7 @@
 #include <endian.h>   
 #include <byteswap.h>
 #include <pthread.h>
+#include <signal.h>
 
 
 //TODO: when 3 is clicked the program stops!
@@ -32,7 +33,7 @@ int sockfd;
 
 
 int main () {
-   
+   int request_no = 0;
    
    socklen_t len;
    struct sockaddr_in address;
@@ -60,12 +61,11 @@ int main () {
 	}
 
 	while(should_run) {
-	        int request_no = 0;
 		do {	    
 		    print_menu();
 		    printf("Your option: ");
      	            scanf("%d", &request_no);
-		  
+		     
 		
 
 			switch(request_no) {
@@ -77,22 +77,25 @@ int main () {
 				break;
 			  case 3:
 				should_run = 0;
-			       	break;
-			  default:
-				printf("No such option!");
+			     	break;
 			}
 		} while(request_no < 1 && request_no > 3);
 		
-
 	}
-   pthread_join(thread_id, NULL);	
+   //pthread_join(thread_id, NULL);	
+   //int returned_value = pthread_kill(thread_id, SIGKILL);
+   //if(returned_value > 0) printf("Error closing the thread!");
+   int returned_value = pthread_cancel(thread_id);
+  // pthread_setcancelstate
+   if(returned_value > 0) fprintf(stderr, "Error closing the thread!");
    close (sockfd);
-   printf("BYE!");
+   printf("\nBYE!\n");
    exit (0);
 }
 
 
-
+// pthread_cleanup_push to do the necessary cleanups - in our
+// case there is no cleanupss
 void* incomming_request_handler(void* vargp) {
 	//printf("Thread receiving responses started!");
 	while(should_run) {
@@ -106,7 +109,6 @@ void* incomming_request_handler(void* vargp) {
 		}
 
 		h_answer_code = ntohl(answer_code);
-
 		no_bytes = read(sockfd, &request_id, sizeof(uint32_t));
 		if(no_bytes < 0) {
 			printf("[REQUEST_ID] Wrong number of bytes were read!");
