@@ -10,6 +10,7 @@
 #include <byteswap.h>
 #include <pthread.h>
 #include <signal.h>
+#include <errno.h>
 
 
 //TODO: when 3 is clicked the program stops!
@@ -28,6 +29,8 @@ int read_wrapper(int, void*, size_t);
 
 int write_wrapper(int, void*, size_t);
 
+char* errno_read_handler(int);
+
 // this variables are modified only by one thread
 // that's why there are thread-safe
 int root_request_counter = 0;
@@ -35,7 +38,7 @@ int date_request_counter = 0;
 int should_run = 1;
 int sockfd;
 
-
+// https://developer.ibm.com/tutorials/l-sockpit/
 int main () {
    int request_no = 0;
    
@@ -60,7 +63,7 @@ int main () {
 	pthread_t thread_id;
 	int error = pthread_create(&thread_id, NULL, incomming_request_handler, NULL);
 	if(error != 0) {
-		printf("\nThread can;t be created!\n");
+		perror("\nThread can;t be created!\n");
 		exit(1);
 	}
 
@@ -96,7 +99,7 @@ int main () {
    printf("\nBYE!\n");
    exit (0);
 }
-
+// https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxbd00/rtrea.htm
 int read_wrapper(int socketfd, void* buffer, size_t size){
 	size_t total_read = 0, total_left = size;
 	char* buffer_pointer = (char*)buffer;
@@ -104,12 +107,15 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 	while(total_left > 0) {
 		size_t current_read = read(socketfd, buffer_pointer, total_left); 
 		
-		//TODO: insert proper error handling
 		if(current_read <= 0){
-			//error while reading
-			if(current_read < 0) {
-				perror("Read error!");
-				break;			
+			// end of the file reached
+			// peer called close() function			
+			if(current_read == 0) {
+				close(socketfd);
+				exit(1);
+			} else if(current_read < 0) {
+				perror(errno_read_handler(errno));
+				exit(1);			
 			}
 
 		} else {
@@ -123,6 +129,29 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 	return total_read;
 }
 
+// http://man7.org/linux/man-pages/man2/read.2.html
+char* errno_read_handler(int errno_value){
+	if(errno_value == EAGAIN) {
+		return "File descriptior not describing the socket";
+	} else if(errno_value == EAGAIN) {
+		return "file descriptiot was refers to a socket and has been marked nonblocking and the read would block";
+	} else if(errno_value == EBADF) {
+		return "Is not vali fd or is not open for reading";
+	} else if(errno_value == EFAULT) {
+		return "Buffer is outside your accessible address space";
+	} else if(errno_value == EINTR) {
+		return "Call was interrupted by a signal before any data was read";
+	} else if(errno_value == EINVAL) {
+		return "fd is attached to an object which is unsuitable for reading or the wrong size bufferwas given";
+	} else if(errno_value == EIO) {
+		return "I/O error either a low-level or by wrong process managment";
+	} else if(errno_value == EISDIR) {
+		return "fd is a directory";	
+	} else {
+		return "Error occured while reading";
+	}
+
+}
 
 int write_wrapper(int socketfd, void* buffer, size_t size) {
 	size_t total_written = 0, total_left = size; 
@@ -176,7 +205,7 @@ void* incomming_request_handler(void* vargp) {
 			case 0xFF0000FFul:
 				// root answer 
 				if(root_request_counter < h_request_id) {
-					printf("Wrong request id!");
+					perror("Wrong request id!");
 					exit(1);
 				}
 				proceed_root_answer(sockfd);			
@@ -184,18 +213,17 @@ void* incomming_request_handler(void* vargp) {
 			case 0xFF000002ul:
 				// date answer 
 				if(date_request_counter < h_request_id) {
-					printf("Wrong request id!");
+					perror("Wrong request id!");
 					exit(1);
 				}
 				proceed_date_answer(sockfd);
 				break;
 			default:
-				printf("Wrong answer code!");
+				perror("Wrong answer code!");
 				exit(1);
 		}
 
 	}
-	//printf("Thread receiving responses ended!");
 }
 
 
@@ -214,17 +242,13 @@ void proceed_date_answer(int sockfd) {
 	uint32_t req_id;
 	uint32_t data_length;
 
-	ssize_t no_bytes = read(sockfd, &data_length, sizeof(uint32_t));
-	if(no_bytes < 0) {
-		printf("[PROCEED_DATE_REQUEST] Error while reading data!");
-		exit(1);
-	}
+	read_wrapper(sockfd, &data_length, sizeof(uint32_t));
 	
 	uint32_t h_data_length = ntohl(data_length);		
 	
 	char* date = malloc(h_data_length * sizeof(char));
 	if(date == NULL) {
-		printf("Error allocating memory!");
+		perror("Error allocating memory!");
 		exit(1);
 	}
 
@@ -241,12 +265,7 @@ void proceed_root_answer(int sockfd) {
 
 
 	memset(request_coded, '\0', 8 * sizeof(char));
-
-	ssize_t no_bytes = read(sockfd, request_coded, 8 * sizeof(char));
-	if(no_bytes < 0) {
-		printf("Error reading data!");
-		exit(1);	
-	}
+	read_wrapper(sockfd, request_coded, 8 * sizeof(char));
 
 	uint64_t result;
 	memcpy(&result, request_coded, sizeof(result));
