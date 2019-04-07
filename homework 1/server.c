@@ -33,6 +33,11 @@ char* errno_write_handler(int);
 
 char* errno_accept_handler(int);
 
+char* errno_bind_handler(int);
+
+char* errno_listen_handler(int);
+
+char* errno_socket_handler(int);
 
 int main () {
    // ignore child signals
@@ -43,6 +48,10 @@ int main () {
    struct sockaddr_in client_address;
 
    server_sockfd = socket (AF_INET, SOCK_STREAM, 0);
+   if(server_sockfd == -1) {
+	perror(errno_socket_handler(errno));
+	exit(1);
+   }	
 
    server_address.sin_family = AF_INET;
    // htonl(INADDR_LOOPBACK);
@@ -50,12 +59,21 @@ int main () {
    server_address.sin_addr.s_addr = htonl(INADDR_ANY);
    server_address.sin_port = htons (9734);
    server_len = sizeof (server_address);
-   bind (server_sockfd, (struct sockaddr *) &server_address, server_len);
+
+   int bind_returned_value = bind (server_sockfd, (struct sockaddr *) &server_address, server_len);
+
+	if(bind_returned_value == -1) {
+		perror(errno_bind_handler(errno));		
+		exit(1);
+	}
 
    /*  Create a connection queue, ignore child exit details and wait for clients.  */
 
-   listen (server_sockfd, 5);
-
+   int listen_returned_value = listen (server_sockfd, 5);
+   if(listen_returned_value == -1) {
+   	perror(errno_listen_handler(errno));
+	exit(1);
+    }
    // signal (SIGCHLD, SIG_IGN);
 
    while (1) {
@@ -226,6 +244,84 @@ char* errno_write_handler(int errno_value) {
 	} else {
 		return "Unknown read error occured";	
 	}	
+}
+
+
+char* errno_socket_handler(int errno_value) {
+	if(errno_value == EACCES) {
+		return "Permission to create a socket of the specified type and/or protocol is denied.";
+	} else if(errno_value == EAFNOSUPPORT) {
+		return "The implementation does not support the specified address family.";
+	} else if(errno_value == EINVAL) {
+		return "Unknown protocol, or protocol family not available OR Invalid flags in type. ";
+	} else if(errno_value == EMFILE) {
+		return "Process file table overflow OR The system limit on the total number of open files has been reached.";
+	} else if(errno_value == ENOBUFS || errno_value == ENOMEM) {
+		return "Insufficient memory is available. The socket cannot be created until sufficient resources are freed. ";
+	} else if(errno_value == EPROTONOSUPPORT) {
+		return "The protocol type or the specified protocol is not supported within this domain.";
+	} else {
+		return "Unknown error occured on socket() call.";
+	}	
+
+
+}
+
+
+char* errno_bind_handler(int errno_value) {
+	if(errno_value == EACCES) {
+		return "The address is protected, and the user is not the superuser.";
+	} else if(errno_value == EADDRINUSE) {
+		return "The given address is already in use OR (Internet domain sockets) The port number was specified as\
+              zero in the socket address structure, but, upon attempting to\
+              bind to an ephemeral port, it was determined that all port\
+              numbers in the ephemeral port range are currently in use.";
+	}  else if(errno_value == EBADF) {
+		return "fd is not a valid file descriptor.";
+	} else if(errno_value == EINVAL) {
+		return "The socket is already bound to an address OR addrlen is wrong, or addr is not a valid address for this socket's domain.";
+	} else if(errno_value == ENOTSOCK) {
+		return "The file descriptor sockfd does not refer to a socket.";
+	} else if(errno_value == EACCES) {
+		return "Search permission is denied on a component of the path prefix.";
+	} else if(errno_value == EADDRNOTAVAIL) {
+		return "A nonexistent interface was requested or the requested address was not local.";
+	} else if(errno_value == EFAULT) {
+		return "addr points outside the user's accessible address space.";
+	} else if(errno_value == ELOOP) {
+		return "Too many symbolic links were encountered in resolving addr.";
+	} else if(errno_value == ENAMETOOLONG) {
+		return "addr is too long.";
+	} else if(errno_value == ENOENT) {
+		return "A component in the directory prefix of the socket pathname does not exist OR Insufficient kernel memory was available.";
+	} else if(errno_value == ENOTDIR) {
+		return "A component of the path prefix is not a directory.";
+	} else if(errno_value == EROFS) {
+		return "The socket inode would reside on a read-only filesystem.";
+	} else {
+		return "Unknown error occured on socket() call.";
+	}	
+
+
+}
+
+char* errno_listen_handler(int errno_value) {
+	if(errno_value == EADDRINUSE) {
+		return "Another socket is already listening on the same port OR (Internet domain sockets) The socket referred to by sockfd had\
+              not previously been bound to an address and, upon attempting\
+              to bind it to an ephemeral port, it was determined that all\
+              port numbers in the ephemeral port range are currently in use.";
+	} else if(errno_value == EBADF) {
+		return "The argument sockfd is not a valid file descriptor.";
+	} else if(errno_value == ENOTSOCK) {
+		return "The file descriptor sockfd does not refer to a socket.";	
+	} else if(errno_value == EOPNOTSUPP) {
+		return "The socket is not of a type that supports the listen() operation.";	
+	} else {
+		return "Unknown error occured on socket() call.";
+	}	
+
+
 }
 
 char* errno_accept_handler(int errno_value) {
