@@ -22,6 +22,11 @@ void root_square_computer(int, uint64_t*, size_t );
 
 void date_handler(int, uint32_t);
 
+int read_wrapper(int, void*, size_t);
+
+
+int write_wrapper(int, void*, size_t);
+
 
 
 int main () {
@@ -207,6 +212,59 @@ void date_handler(int client_sockfd, uint32_t req_id) {
     }
 
     free(response_encoded);
+}
+
+
+int read_wrapper(int socketfd, void* buffer, size_t size){
+	size_t total_read = 0, total_left = size;
+	char* buffer_pointer = (char*)buffer;
+
+	while(total_left > 0) {
+		size_t current_read = read(socketfd, buffer_pointer, total_left); 
+		
+		//TODO: insert proper error handling
+		if(current_read <= 0){
+			//error while reading
+			if(current_read < 0) {
+				perror("Read error!");
+				break;			
+			}
+
+		} else {
+			total_read += current_read;
+			total_left -= current_read;
+			buffer_pointer += current_read;
+		}
+	}
+	
+	
+	return total_read;
+}
+
+
+int write_wrappper(int socketfd, void* buffer, size_t size) {
+	size_t total_written = 0, total_left = size; 
+	char* buffer_pointer = (char*)buffer;
+	
+	while(total_left > 0) {
+		size_t current_written = write(socketfd, buffer_pointer, total_left);
+		
+		//TODO: chagne this 
+		if(current_written <= 0) {
+			// error while writting
+			if(current_written < 0) {
+				perror("Write error!");
+				break;			
+			}
+		} else { 
+			total_written += current_written;
+			total_left -= current_written; 
+			buffer_pointer += current_written;		
+		}
+		
+	}
+
+	return total_written;
 }
 
 
