@@ -31,6 +31,8 @@ char* errno_read_handler(int);
 
 char* errno_write_handler(int);
 
+char* errno_accept_handler(int);
+
 
 int main () {
    // ignore child signals
@@ -66,6 +68,10 @@ int main () {
        client_sockfd = accept (server_sockfd,
                (struct sockaddr *) &client_address,
                &client_len);
+	// error handling
+	if(client_sockfd == -1) {
+		perror(errno_accept_handler(errno));
+	}
 
 	printf("New connection!\n");
 
@@ -76,7 +82,6 @@ int main () {
 		while(1) {
 		   // the children
 		  uint64_t selector_req_id_buffer;
-		  //TODO: returned value
 		  read_wrapper(client_sockfd, &selector_req_id_buffer, sizeof(uint64_t));
 	          uint32_t selector_l, req_id; 
 		  // copy the memory from the buffer
@@ -221,6 +226,47 @@ char* errno_write_handler(int errno_value) {
 	} else {
 		return "Unknown read error occured";	
 	}	
+}
+
+char* errno_accept_handler(int errno_value) {
+	if(errno_value == EAGAIN || errno_value == EWOULDBLOCK) {
+		return "The socket is marked nonblocking and no connections are\
+              present to be accepted.";
+	} else if(errno_value == EBADF) {
+		return "socketfd is not an open file descriptor.";
+	} else if(errno_value == ECONNABORTED) {
+		return "A connection has been aborted.";
+	} else if(errno_value ==  EFAULT) {
+		return "The addr argument is not in a writable part of the user\
+              address space.";
+	} else if(errno_value == EINTR) {
+		return "The system call was interrupted by a signal that was caught\
+              before a valid connection arrived.";
+	} else if(errno_value == EINVAL) {
+		return "Socket is not listening for connections, or addrlen is invalid\
+              (e.g., is negative)";
+	} else if(errno_value == EMFILE) {
+		return "The per-process limit on the number of open file descriptors\
+              has been reached.";
+	} else if(errno_value == ENFILE) {
+		return "The system-wide limit on the total number of open files has\
+              been reached.";
+	} else if(errno_value == ENOBUFS || errno_value == ENOMEM) {
+		return "Not enough free memory.  This often means that the memory\
+              allocation is limited by the socket buffer limits, not by the\
+              system memory.";
+	} else if(errno_value == ENOTSOCK) {
+		return "The file descriptor sockfd does not refer to a socket.";
+	} else if(errno_value == EOPNOTSUPP) {
+		return "The referenced socket is not of type SOCK_STREAM.";
+	} else if(errno_value ==  EPROTO) {
+		return "";
+	} else if(errno_value == EPERM) {
+		return "Firewall rules forbid connection.";
+	} else {
+		return "Other error while establishing connection occured";
+	}
+
 }
 
 

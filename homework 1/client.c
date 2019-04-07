@@ -33,6 +33,8 @@ char* errno_read_handler(int);
 
 char* errno_write_handler(int);
 
+char* errno_connect_handler(int);
+
 // this variables are modified only by one thread
 // that's why there are thread-safe
 int root_request_counter = 0;
@@ -57,7 +59,7 @@ int main () {
 
    result = connect (sockfd, (struct sockaddr *) &address, len);
    if (result == -1) {
-       perror ("Error while connectiong!");
+       perror (errno_connect_handler(errno));
        exit (1);
    }
 
@@ -216,6 +218,67 @@ char* errno_write_handler(int errno_value) {
 	} else {
 		return "Unknown read error occured";	
 	}	
+}
+
+
+char* errno_connect_handler(int errno_value) {
+	if(errno_value == EACCES) {
+		return "[UNIX] Write permission is denied on the socket file, or search\
+              permission is denied for one of the directories in the path\
+              prefix.";
+	} else if(errno_value == EACCES || errno_value == EPERM) {
+		return " The user tried to connect to a broadcast address without\
+              having the socket broadcast flag enabled or the connection\
+              request failed because of a local firewall rule.";
+	} else if(errno_value == EADDRINUSE) {
+		return " Local address is already in use.";
+	} else if(errno_value == EADDRNOTAVAIL) {
+		return "(Internet domain sockets) The socket referred to by fd had\
+              not previously been bound to an address and, upon attempting\
+              to bind it to an ephemeral port, it was determined that all\
+              port numbers in the ephemeral port range are currently in use.";	
+	} else if(errno_value == EAFNOSUPPORT) {
+		return "The passed address didn't have the correct address family in\
+              its sa_family field.";	
+	} else if(errno_value == EAGAIN) {
+		return " For nonblocking UNIX domain sockets, the socket is\
+              nonblocking, and the connection cannot be completed\
+              immediately.  For other socket families, there are\
+              insufficient entries in the routing cache.";
+	} else if(errno_value == EALREADY) {
+		return " The socket is nonblocking and a previous connection attempt\
+              has not yet been completed.";
+	} else if(errno_value == EBADF) {
+		return "fd is not a valid open file descriptor.";
+	} else if(errno_value == ECONNREFUSED) {
+		return "A connect() on a stream socket found no one listening on the\
+              remote address.";
+	} else if(errno_value == EFAULT) {
+		return "The socket structure address is outside the user's address\
+              space.";
+	} else if(errno_value == EINPROGRESS) {
+		return "The socket is nonblocking and the connection cannot be\
+              completed immediately.";
+	} else if(errno_value == EINTR) {
+		return "The system call was interrupted by a signal that was caught.";
+	} else if(errno_value == EISCONN) {
+		return "The socket is already connected.";
+	} else if(errno_value == ENETUNREACH) {
+		return "Network is unreachable.";
+	} else if(errno_value == ENOTSOCK) {
+		return "The file descriptor sockfd does not refer to a socket.";
+	} else if(errno_value == EPROTOTYPE) {
+		return " The socket type does not support the requested communications\
+              protocol.  This error can occur, for example, on an attempt to\
+              connect a UNIX domain datagram socket to a stream socket.";
+	} else if(errno_value == ETIMEDOUT) {
+		return "Timeout while attempting connection.  The server may be too\
+              busy to accept new connections.  Note that for IP sockets the\
+              timeout may be very long when syncookies are enabled on the\
+              server.";
+	} else {
+		return "Unknown connecting error occured.";
+	}
 }
 
 // pthread_cleanup_push to do the necessary cleanups - in our
