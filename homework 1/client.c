@@ -171,10 +171,6 @@ void* incomming_request_handler(void* vargp) {
 		h_answer_code = ntohl(h_answer_code);
 		h_request_id = ntohl(h_request_id);
 
-
-
-
-
 	
 		switch(h_answer_code) {
 			case 0xFF0000FFul:
@@ -232,11 +228,7 @@ void proceed_date_answer(int sockfd) {
 		exit(1);
 	}
 
-	no_bytes = read(sockfd, date, h_data_length * sizeof(char));
-	if(no_bytes < 0) {
-		printf("[PROCEED_DATE_REQUEST] Error while writing data!");
-		exit(1);	
-	}
+	read_wrapper(sockfd, date, h_data_length * sizeof(char));
 	
 	printf("\nDate received: %s\n", date);
 
@@ -288,11 +280,7 @@ void perform_square_root_request(int sockfd) {
 	memcpy(request_coded + sizeof(n_request_code), &n_request_id , sizeof(n_request_id));
 	memcpy(request_coded + (sizeof(n_request_code) + sizeof(n_request_id)), &n_my_digit_bits, 		sizeof(n_my_digit_bits));
 
-	ssize_t no_bytes = write(sockfd, request_coded, 16 * sizeof(char));
-	if(no_bytes == -1) {
-		printf("Error while writing data!");
-		exit(1);
-	}
+	write_wrapper(sockfd, request_coded, 16 * sizeof(char));
 	root_request_counter++;
 }
 
@@ -308,12 +296,8 @@ void perform_date_request(int sockfd) {
 
 	memcpy(request_coded, &n_request_code, sizeof(n_request_code));
 	memcpy(request_coded + sizeof(n_request_code), &n_request_id , sizeof(n_request_id));
-	
-	ssize_t no_bytes = write(sockfd, request_coded, 8 * sizeof(char));
-	if(no_bytes == -1) {
-		printf("[PERFORM_DATE_REQUEST] Error while writing data!");
-		exit(1);
-	}
+
+	write_wrapper(sockfd, request_coded, 8 * sizeof(char));
 
 
 	date_request_counter++;
