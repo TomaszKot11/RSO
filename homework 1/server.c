@@ -72,25 +72,16 @@ int main () {
        if (fork () == 0) {
 		while(1) {
 		   // the children
-		   uint32_t buffer;
-		   uint32_t buffer_two;
-	    
-		   // which operation to perform
-		   ssize_t no_bytes = read(client_sockfd, &buffer, sizeof(uint32_t));
-		   if(no_bytes < 0) {
-			printf("[OPERATION_CODE] Wrong number of bytes was read!");
-			exit(1);
-	   	   }
-
-
-		  no_bytes = read(client_sockfd, &buffer_two, sizeof(uint32_t));
-		  if(no_bytes < 0) {
-		       printf("[REQUEST_ID] Wrong number of bytes was read!");
-		       exit(1);
-		   }
-
-		   uint32_t selector_l = ntohl(buffer);
-		   uint32_t req_id = buffer_two;
+		  uint64_t selector_req_id_buffer;
+		  //TODO: returned value
+		  read_wrapper(client_sockfd, &selector_req_id_buffer, sizeof(uint64_t));
+	          uint32_t selector_l, req_id; 
+		  // copy the memory from the buffer
+			
+		   //TODO: memcpy returned value
+		   memcpy(&selector_l, &selector_req_id_buffer, sizeof(uint32_t));
+		   memcpy(&req_id, &selector_req_id_buffer + sizeof(uint32_t), sizeof(uint32_t));		
+		   selector_l = ntohl(selector_l);
 
 		   switch(selector_l) {
 		       case 0xFFul:
