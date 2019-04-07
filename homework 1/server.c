@@ -24,7 +24,6 @@ void date_handler(int, uint32_t);
 
 int read_wrapper(int, void*, size_t);
 
-
 int write_wrapper(int, void*, size_t);
 
 
@@ -207,7 +206,7 @@ void date_handler(int client_sockfd, uint32_t req_id) {
     time (&sekund);
     wsk_strukt = localtime (&sekund);
     strftime (napis, 60, "%c", wsk_strukt);
-	
+
 
     uint32_t length_date = strlen(napis);
     // encode the response

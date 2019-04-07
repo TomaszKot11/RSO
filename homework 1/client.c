@@ -24,6 +24,10 @@ void proceed_date_answer(int);
 // function that is run by the thread
 void* incomming_request_handler(void*);
 
+int read_wrapper(int, void*, size_t);
+
+int write_wrapper(int, void*, size_t);
+
 // this variables are modified only by one thread
 // that's why there are thread-safe
 int root_request_counter = 0;
@@ -93,30 +97,79 @@ int main () {
    exit (0);
 }
 
+int read_wrapper(int socketfd, void* buffer, size_t size){
+	size_t total_read = 0, total_left = size;
+	char* buffer_pointer = (char*)buffer;
+
+	while(total_left > 0) {
+		size_t current_read = read(socketfd, buffer_pointer, total_left); 
+		
+		//TODO: insert proper error handling
+		if(current_read <= 0){
+			//error while reading
+			if(current_read < 0) {
+				perror("Read error!");
+				break;			
+			}
+
+		} else {
+			total_read += current_read;
+			total_left -= current_read;
+			buffer_pointer += current_read;
+		}
+	}
+	
+	
+	return total_read;
+}
+
+
+int write_wrapper(int socketfd, void* buffer, size_t size) {
+	size_t total_written = 0, total_left = size; 
+	char* buffer_pointer = (char*)buffer;
+	
+	while(total_left > 0) {
+		size_t current_written = write(socketfd, buffer_pointer, total_left);
+		
+		//TODO: chagne this 
+		if(current_written <= 0) {
+			// error while writting
+			if(current_written < 0) {
+				perror("Write error!");
+				break;			
+			}
+		} else { 
+			total_written += current_written;
+			total_left -= current_written; 
+			buffer_pointer += current_written;		
+		}
+		
+	}
+
+	return total_written;
+}
+
 
 // pthread_cleanup_push to do the necessary cleanups - in our
 // case there is no cleanupss
 void* incomming_request_handler(void* vargp) {
 	//printf("Thread receiving responses started!");
 	while(should_run) {
-		uint32_t answer_code, request_id;
 		uint32_t h_answer_code, h_request_id;
-        	// decode the request_code
-		ssize_t no_bytes = read(sockfd, &answer_code, sizeof(uint32_t));
-		if(no_bytes < 0) {
-			printf("[ANSWER_CODE] Wrong number of bytes were read!");
-			exit(1);	
-		}
-
-		h_answer_code = ntohl(answer_code);
-		no_bytes = read(sockfd, &request_id, sizeof(uint32_t));
-		if(no_bytes < 0) {
-			printf("[REQUEST_ID] Wrong number of bytes were read!");
-			exit(1);	
-		}
+		uint64_t answer_code_request_id;
+        	
+		read_wrapper(sockfd, &answer_code_request_id, sizeof(uint64_t));
+		
+		memcpy(&h_answer_code, &answer_code_request_id, sizeof(uint32_t));
+		memcpy(&h_request_id, (char*)&answer_code_request_id + sizeof(uint32_t), sizeof(uint32_t));
+	
 	
 		// decode the reuqest_id
-		h_request_id = ntohl(request_id);
+
+
+		h_answer_code = ntohl(h_answer_code);
+		h_request_id = ntohl(h_request_id);
+
 
 
 	
