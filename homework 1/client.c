@@ -76,8 +76,6 @@ int main () {
 		    print_menu();
 		    printf("Your option: ");
      	            scanf("%d", &request_no);
-		     
-		
 
 			switch(request_no) {
 			  case 1:

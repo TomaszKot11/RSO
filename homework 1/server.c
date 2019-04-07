@@ -103,8 +103,7 @@ int main () {
 		  read_wrapper(client_sockfd, &selector_req_id_buffer, sizeof(uint64_t));
 	          uint32_t selector_l, req_id; 
 		  // copy the memory from the buffer
-			
-		   //TODO: memcpy returned value
+		
 		   memcpy(&selector_l, &selector_req_id_buffer, sizeof(uint32_t));
 		   memcpy(&req_id, &selector_req_id_buffer + sizeof(uint32_t), sizeof(uint32_t));		
 		   selector_l = ntohl(selector_l);
