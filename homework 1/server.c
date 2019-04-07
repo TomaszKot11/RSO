@@ -10,6 +10,7 @@
 #include <byteswap.h>  // bswap_64()
 #include <time.h>
 #include <locale.h>
+#include <errno.h>
 
 #define BUFFER_SIZE 1024
 #define REQ_LENGTH 8
@@ -26,6 +27,9 @@ int read_wrapper(int, void*, size_t);
 
 int write_wrapper(int, void*, size_t);
 
+char* errno_read_handler(int);
+
+char* errno_write_handler(int);
 
 
 int main () {
@@ -102,6 +106,7 @@ int main () {
    }
 }
 
+// https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.bpxbd00/rtrea.htm
 int read_wrapper(int socketfd, void* buffer, size_t size){
 	size_t total_read = 0, total_left = size;
 	char* buffer_pointer = (char*)buffer;
@@ -109,12 +114,17 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 	while(total_left > 0) {
 		size_t current_read = read(socketfd, buffer_pointer, total_left); 
 		
-		//TODO: insert proper error handling
 		if(current_read <= 0){
-			//error while reading
-			if(current_read < 0) {
-				perror("Read error!");
-				break;			
+			// end of the file reached
+			// peer called close() function			
+			if(current_read == 0) {
+				perror("End of the file reached!");
+				close(socketfd);
+				exit(1);
+			} else if(current_read < 0) {
+				perror(errno_read_handler(errno));
+				close(socketfd);
+				exit(1);			
 			}
 
 		} else {
@@ -128,6 +138,29 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 	return total_read;
 }
 
+// http://man7.org/linux/man-pages/man2/read.2.html
+char* errno_read_handler(int errno_value){
+	if(errno_value == EAGAIN) {
+		return "File descriptior not describing the socket";
+	} else if(errno_value == EAGAIN) {
+		return "file descriptiot was refers to a socket and has been marked nonblocking and the read would block";
+	} else if(errno_value == EBADF) {
+		return "Is not vali fd or is not open for reading";
+	} else if(errno_value == EFAULT) {
+		return "Buffer is outside your accessible address space";
+	} else if(errno_value == EINTR) {
+		return "Call was interrupted by a signal before any data was read";
+	} else if(errno_value == EINVAL) {
+		return "fd is attached to an object which is unsuitable for reading or the wrong size bufferwas given";
+	} else if(errno_value == EIO) {
+		return "I/O error either a low-level or by wrong process managment";
+	} else if(errno_value == EISDIR) {
+		return "fd is a directory";	
+	} else {
+		return "Error occured while reading";
+	}
+
+}
 
 int write_wrapper(int socketfd, void* buffer, size_t size) {
 	size_t total_written = 0, total_left = size; 
@@ -136,12 +169,17 @@ int write_wrapper(int socketfd, void* buffer, size_t size) {
 	while(total_left > 0) {
 		size_t current_written = write(socketfd, buffer_pointer, total_left);
 		
-		//TODO: chagne this 
+ 
 		if(current_written <= 0) {
-			// error while writting
-			if(current_written < 0) {
-				perror("Write error!");
-				break;			
+
+			if(current_written == 0) {
+				perror("End of the file reached!");
+				close(socketfd);
+				exit(1);
+			} else if(current_written < 0) {
+				perror(errno_write_handler(errno));
+				close(socketfd);
+				exit(1);			
 			}
 		} else { 
 			total_written += current_written;
@@ -152,6 +190,37 @@ int write_wrapper(int socketfd, void* buffer, size_t size) {
 	}
 
 	return total_written;
+}
+
+// http://man7.org/linux/man-pages/man3/write.3p.html
+char* errno_write_handler(int errno_value) {
+	if(errno_value == EAGAIN) {
+		return "The file is neihter a pipe, nor a FIFO, nor a socket";
+	} else if(errno_value == EBADF) {
+		return "The fd argument is not a vlaid file descriptior open for writing";
+	} else if(errno_value == EFBIG) {
+		return "An attempt was made to write a file that exceeds the\
+              implementation-defined maximum file size or the file size\
+              limit of the process, and there was no room for any bytes to\
+              be written OR The file is a regular file, nbyte is greater than 0, and the\
+              starting position is greater than or equal to the offset\
+              maximum established in the open file description associated\
+              with fd.";
+	} else if(errno_value == EINTR) {
+		return "The write operation was terminated due to the receipt of a\
+              signal, and no data was transferred.";
+	} else if(errno_value == EIO) {
+		return "The process is a member of a background process group\
+              attempting to write to its controlling terminal";
+	} else if(errno_value == ENOSPC) {
+		return "There was no free space remaining on the device containing the\
+              	file.";
+	} else if(errno_value == ERANGE) {
+		return "The transfer request size was outside the range supported by\
+              the STREAMS file associated with fildes.";	
+	} else {
+		return "Unknown read error occured";	
+	}	
 }
 
 
