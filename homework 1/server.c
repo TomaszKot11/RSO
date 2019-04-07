@@ -103,6 +103,58 @@ int main () {
    }
 }
 
+int read_wrapper(int socketfd, void* buffer, size_t size){
+	size_t total_read = 0, total_left = size;
+	char* buffer_pointer = (char*)buffer;
+
+	while(total_left > 0) {
+		size_t current_read = read(socketfd, buffer_pointer, total_left); 
+		
+		//TODO: insert proper error handling
+		if(current_read <= 0){
+			//error while reading
+			if(current_read < 0) {
+				perror("Read error!");
+				break;			
+			}
+
+		} else {
+			total_read += current_read;
+			total_left -= current_read;
+			buffer_pointer += current_read;
+		}
+	}
+	
+	
+	return total_read;
+}
+
+
+int write_wrapper(int socketfd, void* buffer, size_t size) {
+	size_t total_written = 0, total_left = size; 
+	char* buffer_pointer = (char*)buffer;
+	
+	while(total_left > 0) {
+		size_t current_written = write(socketfd, buffer_pointer, total_left);
+		
+		//TODO: chagne this 
+		if(current_written <= 0) {
+			// error while writting
+			if(current_written < 0) {
+				perror("Write error!");
+				break;			
+			}
+		} else { 
+			total_written += current_written;
+			total_left -= current_written; 
+			buffer_pointer += current_written;		
+		}
+		
+	}
+
+	return total_written;
+}
+
 
 void square_root_handler(int client_sockfd, uint32_t req_id) {
 	    // process the root request
@@ -116,12 +168,7 @@ void square_root_handler(int client_sockfd, uint32_t req_id) {
             memcpy(result_coded, &root_code_result, sizeof(uint32_t));
 	    memcpy(result_coded + sizeof(uint32_t), &req_id, sizeof(uint32_t));
 	    memcpy(result_coded + (2 * sizeof(uint32_t)), &result, sizeof(uint64_t)); 
-			
-	    ssize_t no_bytes_two = write(client_sockfd, result_coded, 16 * sizeof(char));
-	    if(no_bytes_two == -1) {
-		 printf("[SQUARE_ROOT_HANDLER] Wrong number of bytes was written!");
-		 exit(1);
-	    }
+	    write_wrapper(client_sockfd, result_coded, 16 * sizeof(char));	
 }
 
 
@@ -130,20 +177,13 @@ void root_square_computer(int client_socket, uint64_t* result, size_t size) {
 
    // read the double value from socket connection
    uint64_t number;
-   ssize_t no_bytes = read(client_socket, &number, sizeof(uint64_t));
-   if(no_bytes < 0) {
-     printf("[ROOT_SQUARE_COMPUTER] Wrong number of bytes was read!");
-	exit(1);
-   }
+   read_wrapper(client_socket, &number, sizeof(uint64_t));	
 
    uint64_t value_for_host = be64toh(number);
    double value = 0.0;
    memcpy(&value, &value_for_host, sizeof(value_for_host));
 
    double d_result = sqrt(value);
-
-   //printf("\nThe root square result double is: %lf\n", d_result);
-
 
    uint64_t output_value;
    memcpy(&output_value, &d_result, sizeof(uint64_t));
@@ -192,70 +232,9 @@ void date_handler(int client_sockfd, uint32_t req_id) {
     // code the date
     // https://stackoverflow.com/questions/1568057/ascii-strings-and-endianness 
     // string are not affected by endianess
-    memcpy(response_encoded + (3 * sizeof(uint32_t)), napis, strlen(napis));
-
-
-    // write
-    ssize_t no_bytes = write(client_sockfd, response_encoded, ((12 + length_date) * sizeof(char)));
-    if(no_bytes == -1) {
-    	printf("[DATE_HANDLER] wrong gnumber of bytes was read!");
-	exit(1);
-    }
+    memcpy(response_encoded + (3 * sizeof(uint32_t)), napis, strlen(napis));	
+    write_wrapper(client_sockfd, response_encoded, ((12 + length_date) * sizeof(char)));	
 
     free(response_encoded);
 }
-
-
-int read_wrapper(int socketfd, void* buffer, size_t size){
-	size_t total_read = 0, total_left = size;
-	char* buffer_pointer = (char*)buffer;
-
-	while(total_left > 0) {
-		size_t current_read = read(socketfd, buffer_pointer, total_left); 
-		
-		//TODO: insert proper error handling
-		if(current_read <= 0){
-			//error while reading
-			if(current_read < 0) {
-				perror("Read error!");
-				break;			
-			}
-
-		} else {
-			total_read += current_read;
-			total_left -= current_read;
-			buffer_pointer += current_read;
-		}
-	}
-	
-	
-	return total_read;
-}
-
-
-int write_wrappper(int socketfd, void* buffer, size_t size) {
-	size_t total_written = 0, total_left = size; 
-	char* buffer_pointer = (char*)buffer;
-	
-	while(total_left > 0) {
-		size_t current_written = write(socketfd, buffer_pointer, total_left);
-		
-		//TODO: chagne this 
-		if(current_written <= 0) {
-			// error while writting
-			if(current_written < 0) {
-				perror("Write error!");
-				break;			
-			}
-		} else { 
-			total_written += current_written;
-			total_left -= current_written; 
-			buffer_pointer += current_written;		
-		}
-		
-	}
-
-	return total_written;
-}
-
 
