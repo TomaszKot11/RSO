@@ -24,12 +24,6 @@ int read_wrapper(int, void*, size_t);
 
 int write_wrapper(int, void*, size_t);
 
-char* errno_read_handler(int);
-
-char* errno_write_handler(int);
-
-char* errno_connect_handler(int);
-
 // this variables are modified only by one thread
 // that's why there are thread-safe
 int root_request_counter = 0;
@@ -46,6 +40,10 @@ int main () {
    int result;
 
    sockfd = socket (AF_INET, SOCK_STREAM, 0);
+   if(sockfd == -1) {
+	perror(strerror(errno));	
+	exit(1);
+   }	
 
    address.sin_family = AF_INET;
    address.sin_addr.s_addr = inet_addr ("127.0.0.1");
@@ -54,7 +52,7 @@ int main () {
 
    result = connect (sockfd, (struct sockaddr *) &address, len);
    if (result == -1) {
-       perror (errno_connect_handler(errno));
+       perror (strerror(errno));
        exit (1);
    }
 
@@ -114,8 +112,9 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 				//exit(1);
 				
 			} else if(current_read < 0) {
-				// EINTR
-				perror(errno_read_handler(errno));
+				// EINTR the call was interrupted before any data was read
+				if(errno == EINTR) continue;
+				perror(strerror(errno));
 				close(socketfd);
 				return -1;
 				//exit(1);			
@@ -130,30 +129,6 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 	
 	
 	return total_read;
-}
-
-// http://man7.org/linux/man-pages/man2/read.2.html
-char* errno_read_handler(int errno_value){
-	if(errno_value == EAGAIN) {
-		return "File descriptior not describing the socket";
-	} else if(errno_value == EAGAIN) {
-		return "file descriptiot was refers to a socket and has been marked nonblocking and the read would block";
-	} else if(errno_value == EBADF) {
-		return "Is not vali fd or is not open for reading";
-	} else if(errno_value == EFAULT) {
-		return "Buffer is outside your accessible address space";
-	} else if(errno_value == EINTR) {
-		return "Call was interrupted by a signal before any data was read";
-	} else if(errno_value == EINVAL) {
-		return "fd is attached to an object which is unsuitable for reading or the wrong size bufferwas given";
-	} else if(errno_value == EIO) {
-		return "I/O error either a low-level or by wrong process managment";
-	} else if(errno_value == EISDIR) {
-		return "fd is a directory";	
-	} else {
-		return "Error occured while reading";
-	}
-
 }
 
 int write_wrapper(int socketfd, void* buffer, size_t size) {
@@ -171,7 +146,7 @@ int write_wrapper(int socketfd, void* buffer, size_t size) {
 				close(socketfd);
 				exit(1);
 			} else if(current_written < 0) {
-				perror(errno_write_handler(errno));
+				perror(strerror(errno));
 				close(socketfd);
 				exit(1);			
 			}
@@ -184,98 +159,6 @@ int write_wrapper(int socketfd, void* buffer, size_t size) {
 	}
 
 	return total_written;
-}
-
-// http://man7.org/linux/man-pages/man3/write.3p.html
-char* errno_write_handler(int errno_value) {
-	if(errno_value == EAGAIN) {
-		return "The file is neihter a pipe, nor a FIFO, nor a socket";
-	} else if(errno_value == EBADF) {
-		return "The fd argument is not a vlaid file descriptior open for writing";
-	} else if(errno_value == EFBIG) {
-		return "An attempt was made to write a file that exceeds the\
-              implementation-defined maximum file size or the file size\
-              limit of the process, and there was no room for any bytes to\
-              be written OR The file is a regular file, nbyte is greater than 0, and the\
-              starting position is greater than or equal to the offset\
-              maximum established in the open file description associated\
-              with fd.";
-	} else if(errno_value == EINTR) {
-		return "The write operation was terminated due to the receipt of a\
-              signal, and no data was transferred.";
-	} else if(errno_value == EIO) {
-		return "The process is a member of a background process group\
-              attempting to write to its controlling terminal";
-	} else if(errno_value == ENOSPC) {
-		return "There was no free space remaining on the device containing the\
-              	file.";
-	} else if(errno_value == ERANGE) {
-		return "The transfer request size was outside the range supported by\
-              the STREAMS file associated with fildes.";	
-	} else {
-		return "Unknown read error occured";	
-	}	
-}
-
-
-char* errno_connect_handler(int errno_value) {
-	if(errno_value == EACCES) {
-		return "[UNIX] Write permission is denied on the socket file, or search\
-              permission is denied for one of the directories in the path\
-              prefix.";
-	} else if(errno_value == EACCES || errno_value == EPERM) {
-		return " The user tried to connect to a broadcast address without\
-              having the socket broadcast flag enabled or the connection\
-              request failed because of a local firewall rule.";
-	} else if(errno_value == EADDRINUSE) {
-		return " Local address is already in use.";
-	} else if(errno_value == EADDRNOTAVAIL) {
-		return "(Internet domain sockets) The socket referred to by fd had\
-              not previously been bound to an address and, upon attempting\
-              to bind it to an ephemeral port, it was determined that all\
-              port numbers in the ephemeral port range are currently in use.";	
-	} else if(errno_value == EAFNOSUPPORT) {
-		return "The passed address didn't have the correct address family in\
-              its sa_family field.";	
-	} else if(errno_value == EAGAIN) {
-		return " For nonblocking UNIX domain sockets, the socket is\
-              nonblocking, and the connection cannot be completed\
-              immediately.  For other socket families, there are\
-              insufficient entries in the routing cache.";
-	} else if(errno_value == EALREADY) {
-		return " The socket is nonblocking and a previous connection attempt\
-              has not yet been completed.";
-	} else if(errno_value == EBADF) {
-		return "fd is not a valid open file descriptor.";
-	} else if(errno_value == ECONNREFUSED) {
-		return "A connect() on a stream socket found no one listening on the\
-              remote address.";
-	} else if(errno_value == EFAULT) {
-		return "The socket structure address is outside the user's address\
-              space.";
-	} else if(errno_value == EINPROGRESS) {
-		return "The socket is nonblocking and the connection cannot be\
-              completed immediately.";
-	} else if(errno_value == EINTR) {
-		return "The system call was interrupted by a signal that was caught.";
-	} else if(errno_value == EISCONN) {
-		return "The socket is already connected.";
-	} else if(errno_value == ENETUNREACH) {
-		return "Network is unreachable.";
-	} else if(errno_value == ENOTSOCK) {
-		return "The file descriptor sockfd does not refer to a socket.";
-	} else if(errno_value == EPROTOTYPE) {
-		return " The socket type does not support the requested communications\
-              protocol.  This error can occur, for example, on an attempt to\
-              connect a UNIX domain datagram socket to a stream socket.";
-	} else if(errno_value == ETIMEDOUT) {
-		return "Timeout while attempting connection.  The server may be too\
-              busy to accept new connections.  Note that for IP sockets the\
-              timeout may be very long when syncookies are enabled on the\
-              server.";
-	} else {
-		return "Unknown connecting error occured.";
-	}
 }
 
 // pthread_cleanup_push to do the necessary cleanups - in our
@@ -293,8 +176,6 @@ void* incomming_request_handler(void* vargp) {
 	
 	
 		// decode the reuqest_id
-
-//TODO: request_id is always 0?!
 
 		h_answer_code = ntohl(h_answer_code);
 		h_request_id = ntohl(h_request_id);
@@ -391,7 +272,7 @@ void perform_square_root_request(int sockfd) {
 
 	// encode root request
 	uint32_t request_code = 255;
-	uint32_t request_id = 1;
+	uint32_t request_id = root_request_counter;
 	char request_coded[16];
 	// code for network transfer
 	uint32_t n_request_code = htonl(request_code);
@@ -409,7 +290,7 @@ void perform_square_root_request(int sockfd) {
 
 void perform_date_request(int sockfd) {
 	uint32_t request_code = 2;
-	uint32_t request_id = 1;
+	uint32_t request_id = date_request_counter;
 	char request_coded[8];
 	// code for network transfer
 	uint32_t n_request_code = htonl(request_code);
