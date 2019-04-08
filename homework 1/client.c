@@ -12,11 +12,6 @@
 #include <signal.h>
 #include <errno.h>
 
-
-//TODO: when 3 is clicked the program stops!
-// TODO: fix response code!
-//TODO: use mutexes!
-
 void print_menu();
 void perform_square_root_request(int);
 void perform_date_request(int);
@@ -107,7 +102,7 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 	char* buffer_pointer = (char*)buffer;
 
 	while(total_left > 0) {
-		size_t current_read = read(socketfd, buffer_pointer, total_left); 
+		ssize_t current_read = read(socketfd, buffer_pointer, total_left); 
 		
 		if(current_read <= 0){
 			// end of the file reached
@@ -115,11 +110,15 @@ int read_wrapper(int socketfd, void* buffer, size_t size){
 			if(current_read == 0) {
 				perror("End of the file reached!");
 				close(socketfd);
-				exit(1);
+				return 0;
+				//exit(1);
+				
 			} else if(current_read < 0) {
+				// EINTR
 				perror(errno_read_handler(errno));
 				close(socketfd);
-				exit(1);			
+				return -1;
+				//exit(1);			
 			}
 
 		} else {
@@ -162,7 +161,7 @@ int write_wrapper(int socketfd, void* buffer, size_t size) {
 	char* buffer_pointer = (char*)buffer;
 	
 	while(total_left > 0) {
-		size_t current_written = write(socketfd, buffer_pointer, total_left);
+		ssize_t current_written = write(socketfd, buffer_pointer, total_left);
 		
  
 		if(current_written <= 0) {
@@ -346,13 +345,16 @@ void proceed_date_answer(int sockfd) {
 	
 	uint32_t h_data_length = ntohl(data_length);		
 	
-	char* date = malloc(h_data_length * sizeof(char));
+	char* date = malloc((h_data_length * sizeof(char)) + 1);
 	if(date == NULL) {
 		perror("Error allocating memory!");
 		exit(1);
 	}
 
+	 	
 	read_wrapper(sockfd, date, h_data_length * sizeof(char));
+
+	*(date + h_data_length) = '\0';
 	
 	printf("\nDate received: %s\n", date);
 
@@ -397,7 +399,7 @@ void perform_square_root_request(int sockfd) {
 
 	memcpy(request_coded, &n_request_code, sizeof(n_request_code));
 	memcpy(request_coded + sizeof(n_request_code), &n_request_id , sizeof(n_request_id));
-	memcpy(request_coded + (sizeof(n_request_code) + sizeof(n_request_id)), &n_my_digit_bits, 		sizeof(n_my_digit_bits));
+	memcpy(request_coded + (sizeof(n_request_code) + sizeof(n_request_id)), &n_my_digit_bits, sizeof(n_my_digit_bits));
 
 	write_wrapper(sockfd, request_coded, 16 * sizeof(char));
 	root_request_counter++;

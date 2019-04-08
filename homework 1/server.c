@@ -434,7 +434,7 @@ void date_handler(int client_sockfd, uint32_t req_id) {
     memcpy(response_encoded + sizeof(uint32_t), &req_id, sizeof(uint32_t)); 
 
     // code date length
-    uint32_t date_length = sizeof(napis);
+    uint32_t date_length = strlen(napis);
     uint32_t n_date_length = htonl(date_length);
     memcpy(response_encoded + (2 * sizeof(uint32_t)), &n_date_length, sizeof(uint32_t)); 
 
