@@ -14,6 +14,8 @@
 
 #define ROOT_ANSWER_CODE 0x1000001
 #define DATE_ANSER_CODE 0x10002
+#define ROOT_REQUEST_CODE 0x1
+#define DATE_REQUEST_CODE 0x2
 
 void print_menu();
 void perform_square_root_request(int);
@@ -183,6 +185,8 @@ void* incomming_request_handler(void* vargp) {
 		h_answer_code = ntohl(h_answer_code);
 		h_request_id = ntohl(h_request_id);
 
+
+		//printf("\nThe answer code is: %x\n", h_answer_code);
 	
 		switch(h_answer_code) {
 			case ROOT_ANSWER_CODE:
@@ -193,7 +197,6 @@ void* incomming_request_handler(void* vargp) {
 				}
 				proceed_root_answer(sockfd);			
 				break;
-//0xFF000002ul
 			case DATE_ANSER_CODE:
 				// date answer 
 				if(date_request_counter < h_request_id) {
@@ -275,7 +278,7 @@ void perform_square_root_request(int sockfd) {
 
 
 	// encode root request
-	uint32_t request_code = 255;
+	uint32_t request_code = ROOT_REQUEST_CODE;
 	uint32_t request_id = root_request_counter;
 	char request_coded[16];
 	// code for network transfer
@@ -293,7 +296,7 @@ void perform_square_root_request(int sockfd) {
 
 
 void perform_date_request(int sockfd) {
-	uint32_t request_code = 2;
+	uint32_t request_code = DATE_REQUEST_CODE;
 	uint32_t request_id = date_request_counter;
 	char request_coded[8];
 	// code for network transfer

@@ -16,6 +16,8 @@
 #define REQ_LENGTH 8
 #define ROOT_ANSWER_CODE 0x1000001
 #define DATE_ANSER_CODE 0x10002
+#define ROOT_REQUEST_CODE 0x1
+#define DATE_REQUEST_CODE 0x2
 
 void square_root_handler(int, uint32_t);
 
@@ -97,11 +99,12 @@ int main () {
 		   selector_l = ntohl(selector_l);
 
 		   switch(selector_l) {
-		       case 0xFFul:
+//255
+		       case ROOT_REQUEST_CODE:
 			    // process the square roto request
 		       	    square_root_handler(client_sockfd, req_id);
 			    break;
-			case 0x2ul:
+			case DATE_REQUEST_CODE:
 			    //printf("Received the date request!\n");
 			    date_handler(client_sockfd, req_id);
 			    break;
@@ -185,6 +188,7 @@ void square_root_handler(int client_sockfd, uint32_t req_id) {
 	    char result_coded[16];
             // code the result
 	    uint32_t root_code_result = htonl(ROOT_ANSWER_CODE);
+	   // printf("\n%x\n", root_code_result);
 	
 
             memcpy(result_coded, &root_code_result, sizeof(uint32_t));
