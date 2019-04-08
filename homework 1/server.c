@@ -14,6 +14,8 @@
 
 #define BUFFER_SIZE 1024
 #define REQ_LENGTH 8
+#define ROOT_ANSWER_CODE 0x1000001
+#define DATE_ANSER_CODE 0x10002
 
 void square_root_handler(int, uint32_t);
 
@@ -182,7 +184,7 @@ void square_root_handler(int client_sockfd, uint32_t req_id) {
 	    root_square_computer(client_sockfd, &result, sizeof(uint64_t));
 	    char result_coded[16];
             // code the result
-	    uint32_t root_code_result = htonl(0xFF0000FFul);
+	    uint32_t root_code_result = htonl(ROOT_ANSWER_CODE);
 	
 
             memcpy(result_coded, &root_code_result, sizeof(uint32_t));
@@ -237,7 +239,7 @@ void date_handler(int client_sockfd, uint32_t req_id) {
 	exit(1); 
     }
     // request code
-    uint32_t response_code = 0xFF000002ul;
+    uint32_t response_code = DATE_ANSER_CODE;
     uint32_t n_response_code = htonl(response_code);
     memcpy(response_encoded, &n_response_code, sizeof(uint32_t));
 	

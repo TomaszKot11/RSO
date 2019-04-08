@@ -12,6 +12,9 @@
 #include <signal.h>
 #include <errno.h>
 
+#define ROOT_ANSWER_CODE 0x1000001
+#define DATE_ANSER_CODE 0x10002
+
 void print_menu();
 void perform_square_root_request(int);
 void perform_date_request(int);
@@ -182,7 +185,7 @@ void* incomming_request_handler(void* vargp) {
 
 	
 		switch(h_answer_code) {
-			case 0xFF0000FFul:
+			case ROOT_ANSWER_CODE:
 				// root answer 
 				if(root_request_counter < h_request_id) {
 					perror("Wrong request id!");
@@ -190,7 +193,8 @@ void* incomming_request_handler(void* vargp) {
 				}
 				proceed_root_answer(sockfd);			
 				break;
-			case 0xFF000002ul:
+//0xFF000002ul
+			case DATE_ANSER_CODE:
 				// date answer 
 				if(date_request_counter < h_request_id) {
 					perror("Wrong request id!");
