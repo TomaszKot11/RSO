@@ -9,25 +9,25 @@ struct RoomInfo
 
 sequence<RoomInfo> RoomList;
 
-exception NoSuchRoom {};
-exception NameAlreadyExists {};
+//exception NoSuchRoom {};
+//exception NameAlreadyExists {};
 
-exception NoSuchUser {};
+//exception NoSuchUser {};
 
 sequence<string> userList;
 
-exception NickNotAvailable {};
+//exception NickNotAvailable {};
 
 interface User {
-  void sendMessage(string message, string fromWho); 
-  void sendPrivateMessage(string message, string fromWho); 
+  void sendMessage(string message, string fromWho);
+  void sendPrivateMessage(string message, string fromWho);
 };
 
 interface chatRoom {
     userList listUsers();
-    void join(string nick, User* who) throws NickNotAvailable;
+    void join(string nick, User* who);
     void postMessage(string message, string fromWho);
-    User* getUser(string name) throws NoSuchUser;
+    User* getUser(string name);
     void Leave(string name);
 };
 
@@ -37,8 +37,8 @@ interface chatRoomFactory {
 
 interface chatServer {
   RoomList getRooms();
-  chatRoom* getRoom(string name) throws NoSuchRoom;
-  chatRoom* newChatRoom(string name) throws NameAlreadyExists;
+  chatRoom* getRoom(string name);
+  chatRoom* newChatRoom(string name);
   void registerFactory(chatRoomFactory* crf);
   void unregisterFactory(chatRoomFactory* crf);
 };
