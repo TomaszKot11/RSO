@@ -36,10 +36,11 @@ interface chatRoomFactory {
 };
 
 interface chatServer {
-  RoomList getRooms();
-  chatRoom* getRoom(string name);
-  chatRoom* newChatRoom(string name);
-  void registerFactory(chatRoomFactory* crf);
+  RoomList getRooms(); // implemented
+  chatRoom* getRoom(string name); // almost implemented
+  chatRoom* newChatRoom(string name); // almost implemented
+  void registerFactory(chatRoomFactory* crf); // czy to ma byc zarejestrowane jako
+  // servant? i wukorzystywać to w newChatRoom?
   void unregisterFactory(chatRoomFactory* crf);
 };
 
