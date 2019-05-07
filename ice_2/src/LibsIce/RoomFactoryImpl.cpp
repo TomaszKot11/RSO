@@ -1,11 +1,7 @@
 #include "RoomFactoryImpl.h"
 
 namespace LibsIce {
-    RoomList RoomFactoryImpl::getRooms(const ::Ice::Current&) {
-        return roomList;
-    }
-
-    ChatRoomPrx RoomFactoryImpl::createRoom(const string& name, const ::Ice::Current&) {
+    ChatRoomPrx RoomFactoryImpl::newChatRoom(const string& name, const ::Ice::Current&) {
         ChatRoomPtr object = new RoomImpl(name);
         cout << "RoomFactory::Creating room " << name << endl;
         int port = portsUtil.getRandomPort();
@@ -15,8 +11,8 @@ namespace LibsIce {
         adapter->activate();
         Ice::ObjectPrx base = ic->stringToProxy("SimpleRoom" + name + ":default -p " + to_string(port));
         ChatRoomPrx room = ChatRoomPrx::checkedCast(base);
-        roomList.push_back(room);
         cout << "RoomFactory::Room created" << endl;
+
         return room;
     }
 
