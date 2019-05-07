@@ -2,10 +2,10 @@
 
 namespace RoomFactory {
     void Factory::registerRoomFactory() {
-        RoomFactoryPtr object = new RoomFactoryImpl();
+        ChatRoomFactoryPtr object = new RoomFactoryImpl();
         int port = portsUtil.getRandomPort();
         adapter = iceCommunicator->createObjectAdapterWithEndpoints("RoomFactory", "default -p " + to_string(port));
-        roomFactory = RoomFactoryPrx::uncheckedCast(adapter->addWithUUID(object));
+        roomFactory = ChatRoomFactoryPrx::uncheckedCast(adapter->addWithUUID(object));
         adapter->add(object, iceCommunicator->stringToIdentity("RoomFactory"));
         adapter->activate();
         server->RegisterRoomFactory(roomFactory);
@@ -21,12 +21,12 @@ namespace RoomFactory {
             if (!server) {
                 throw "Invalid proxy";
             }
-        } catch (const RoomAlreadyExist &ex) {
+        } catch (const NameAlreadyExists &ex) {
             cerr << ex << endl;
-        } catch (const NoSuchRoomExist& ex) {
+        } catch (const NoSuchRoom& ex) {
             cerr << ex << endl;
-        } catch (const UserAlreadyExists& ex) {
-            cerr << "Such userr already exist" << endl;
+        } catch (const NoSuchUser& ex) {
+            cerr << "No such user" << endl;
         } catch (const Ice::Exception& ex) {
             cerr << ex << endl;
         } catch (const char* msg) {

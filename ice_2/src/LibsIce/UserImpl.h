@@ -6,19 +6,20 @@
     #include <chrono>
     #include <ctime>
 
-    using namespace Chat;
+    using namespace chat;
     using namespace std;
 
     namespace LibsIce {
         class UserImpl : public virtual User {
             public:
                 UserImpl(const string& n) : name(n){};
-                virtual string getName(const Ice::Current&) override;
-                virtual void SendMessage(const string&,
-                                         const UserPrx&,
+                virtual void sendMessage(const string&,
                                          const string&,
                                          const ::Ice::Current& = ::Ice::Current()) override;
-                virtual void SendPrivateMessage(const UserPrx&,
+
+
+                // virtual string getName(const Ice::Current&) override;
+                virtual void sendPrivateMessage(const string&,
                                                 const string&,
                                                 const ::Ice::Current& = ::Ice::Current()) override;
             private:

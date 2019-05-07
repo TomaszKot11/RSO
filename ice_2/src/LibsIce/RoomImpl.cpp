@@ -18,9 +18,9 @@ namespace LibsIce {
                                         pair<string, string>(user->getName(), password));
     }
 
-    void RoomImpl::ChangePassword(const UserPrx& user, 
-                                  const string& oldPassword, 
-                                  const string& newPassword, 
+    void RoomImpl::ChangePassword(const UserPrx& user,
+                                  const string& oldPassword,
+                                  const string& newPassword,
                                   const ::Ice::Current&) {
         auto username = user->getName();
         auto userSavedInRoom = usernamesWithPasswords.find(username);
@@ -46,7 +46,7 @@ namespace LibsIce {
             if ((*usersIterator) == user) {
                 usersIterator = users.erase(usersIterator);
                 break;
-            } 
+            }
         }
         cout << "Removed user " << user->getName() << " from room" << endl;
     }
@@ -56,9 +56,9 @@ namespace LibsIce {
         users.clear();
     }
 
-    void RoomImpl::SendMessage(const UserPrx& user, 
-                               const string& message, 
-                               const string& password, 
+    void RoomImpl::SendMessage(const UserPrx& user,
+                               const string& message,
+                               const string& password,
                                const ::Ice::Current&) {
         auto userSavedInRoom = usernamesWithPasswords.find(user->getName());
         if (userSavedInRoom == usernamesWithPasswords.end()) {

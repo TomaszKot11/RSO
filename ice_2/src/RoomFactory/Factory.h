@@ -7,7 +7,7 @@
     #include "PortsUtil.h"
 
     using namespace std;
-    using namespace Chat;
+    using namespace chat;
     using namespace LibsIce;
 
     namespace RoomFactory {

@@ -7,15 +7,14 @@
     #include "PortsUtil.h"
 
     using namespace std;
-    using namespace Chat;
+    using namespace chat;
 
     namespace LibsIce {
-        class RoomFactoryImpl : public virtual RoomFactory {
+        class RoomFactoryImpl : public virtual ChatRoomFactory {
             public:
                 RoomFactoryImpl();
-                virtual RoomPrx createRoom(const string&, 
+                virtual ChatRoomPrx newChatRoom(const string&,
                                            const ::Ice::Current& = ::Ice::Current()) override;
-                virtual RoomList getRooms(const ::Ice::Current& = ::Ice::Current()) override;
                 ~RoomFactoryImpl();
             private:
                 RoomList roomList;

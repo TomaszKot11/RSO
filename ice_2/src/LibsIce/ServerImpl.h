@@ -12,19 +12,18 @@
     using namespace std;
 
     namespace LibsIce {
-        class ServerImpl : public virtual Server {
+        class ServerImpl : public virtual chatServer {
             public:
                 ServerImpl();
-
-                virtual RoomPrx CreateRoom(const string&,
+                virtual void registerFactory(const ChatRoomFactoryPrx&,
+                                                 const ::Ice::Current& = ::Ice::Current()) override;
+                virtual void unregisterFactory(const ChatRoomFactoryPrx&,
+                                                   const ::Ice::Current& = ::Ice::Current()) override;
+                virtual ChatRoomPrx newChatRoom(const string&,
                                            const ::Ice::Current& = ::Ice::Current()) override;
                 virtual RoomList getRooms(const ::Ice::Current& = ::Ice::Current()) override;
-                virtual RoomPrx FindRoom(const string&,
+                virtual ChatRoomPrx getRoom(const string&,
                                          const ::Ice::Current& = ::Ice::Current()) override;
-                virtual void RegisterRoomFactory(const RoomFactoryPrx&,
-                                                 const ::Ice::Current& = ::Ice::Current()) override;
-                virtual void UnregisterRoomFactory(const RoomFactoryPrx&,
-                                                   const ::Ice::Current& = ::Ice::Current()) override;
                 ~ServerImpl();
             private:
                 RoomList roomList;
