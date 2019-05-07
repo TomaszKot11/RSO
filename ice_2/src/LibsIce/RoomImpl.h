@@ -30,7 +30,8 @@
               private:
                 string roomName;
                 UserList users;
-                UsernamesWithPasswordList usernamesWithPasswords;
+                //::std::map< ::std::string, UserPrx> NickUserDictinary;
+                NickUserDictinary nickUserDictionary;
         };
     }
 

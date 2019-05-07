@@ -1,76 +1,67 @@
 #include "RoomImpl.h"
 
 namespace LibsIce {
-    string RoomImpl::getName(const ::Ice::Current&) {
-        return roomName;
-    }
-
-    UserList RoomImpl::getUsers(const ::Ice::Current&) {
+    UserList RoomImpl::listUsers(const ::Ice::Current&) {
         return users;
     }
 
-    void RoomImpl::AddUser(const UserPrx& user, const string& password, const ::Ice::Current&) {
-        if (usernamesWithPasswords.find(user->getName()) != usernamesWithPasswords.end()) {
-            throw UserAlreadyExists();
+    void RoomImpl::join(const string& nick, const UserPrx& who,  const ::Ice::Current&) {
+        for(auto const& value: users) {
+          if(value == nick)
+            throw NameAlreadyExists();
         }
-        users.push_back(user);
-        usernamesWithPasswords.insert(usernamesWithPasswords.begin(),
-                                        pair<string, string>(user->getName(), password));
+
+        users.push_back(nick);
+        nickUserDictionary[nick] = who;
     }
 
-    void RoomImpl::ChangePassword(const UserPrx& user,
-                                  const string& oldPassword,
-                                  const string& newPassword,
-                                  const ::Ice::Current&) {
-        auto username = user->getName();
-        auto userSavedInRoom = usernamesWithPasswords.find(username);
-        if (userSavedInRoom == usernamesWithPasswords.end()) {
-            throw NoSuchUserExist();
+    void RoomImpl::Leave(const string& nick, const ::Ice::Current&) {
+       // check if exists
+       bool userExists = false;
+       auto counter = users.begin();
+
+       for(auto const& value: users) {
+          if(value == nick) {
+            userExists = true;
+          }
+          counter++;
         }
-        if (userSavedInRoom->second != oldPassword) {
-            throw WrongPassword();
-        }
-        usernamesWithPasswords.at(username) = newPassword;
+
+      if(!userExists)
+        throw NoSuchUser();
+
+      // remove from the users and map
+      users.erase(counter);
+      nickUserDictionary.erase(nick);
+
+      cout << "Removed user: " << nick << " from room" << endl;
     }
 
-    void RoomImpl::LeaveRoom(const UserPrx& user, const string& password, const ::Ice::Current&) {
-        auto userSavedInRoom = usernamesWithPasswords.find(user->getName());
-        if (userSavedInRoom == usernamesWithPasswords.end()) {
-            throw NoSuchUserExist();
+    UserPrx RoomImpl::getUser(const string& nick, const ::Ice::Current&) {
+       // check if exists
+       for(auto const& value: users) {
+          if(value == nick)
+            throw NameAlreadyExists();
         }
-        if (userSavedInRoom->second != password) {
-            throw WrongPassword();
-        }
-        usernamesWithPasswords.erase(userSavedInRoom);
-        for (auto usersIterator = users.begin(); usersIterator != users.end(); ++usersIterator) {
-            if ((*usersIterator) == user) {
-                usersIterator = users.erase(usersIterator);
-                break;
-            }
-        }
-        cout << "Removed user " << user->getName() << " from room" << endl;
+
+      return nickUserDictionary[nick];
     }
 
-    void RoomImpl::Destroy(const ::Ice::Current&) {
-        usernamesWithPasswords.clear();
-        users.clear();
-    }
-
-    void RoomImpl::SendMessage(const UserPrx& user,
-                               const string& message,
-                               const string& password,
+    void RoomImpl::postMessage(const string& message,
+                              const string& fromWho,
                                const ::Ice::Current&) {
-        auto userSavedInRoom = usernamesWithPasswords.find(user->getName());
-        if (userSavedInRoom == usernamesWithPasswords.end()) {
-            throw NoSuchUserExist();
+        // check if sender is inside the room
+         for(auto const& value: users) {
+          if(value == fromWho)
+            throw NoSuchUser();
         }
 
-        if (userSavedInRoom->second != password) {
-            throw WrongPassword();
-        }
+      auto it = nickUserDictionary.begin();
+      while (it != nickUserDictionary.end()) {
+      // Accessing VALUE from element pointed by it.
+        it->second ->sendMessage(message, fromWho);
+        it++;
+      }
 
-        for (auto& userInRoom : users) {
-            userInRoom->SendMessage(roomName, user, message);
-        }
     }
 }

@@ -18,7 +18,12 @@ sequence<string> UserList;
 interface User {
   void sendMessage(string message, string fromWho);
   void sendPrivateMessage(string message, string fromWho);
+   // added
+  string getName();
 };
+
+// added
+dictionary<string, User*> NickUserDictinary;
 
 interface ChatRoom {
     UserList listUsers();
@@ -32,6 +37,7 @@ interface ChatRoomFactory {
   ChatRoom* newChatRoom(string name);
 };
 
+// added
 sequence<ChatRoomFactory*> RoomFactoryList;
 
 interface chatServer {

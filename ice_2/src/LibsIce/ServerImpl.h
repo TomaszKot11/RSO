@@ -8,7 +8,7 @@
     #include "UserImpl.h"
     #include "PortsUtil.h"
 
-    using namespace Chat;
+    using namespace chat;
     using namespace std;
 
     namespace LibsIce {

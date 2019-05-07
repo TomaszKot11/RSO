@@ -198,6 +198,8 @@ using RoomList = ::std::vector<RoomInfo>;
 
 using UserList = ::std::vector<::std::string>;
 
+using NickUserDictinary = ::std::map<::std::string, ::std::shared_ptr<UserPrx>>;
+
 using RoomFactoryList = ::std::vector<::std::shared_ptr<ChatRoomFactoryPrx>>;
 
 using Ice::operator<;
@@ -254,6 +256,11 @@ public:
     virtual void sendPrivateMessage(::std::string message, ::std::string fromWho, const ::Ice::Current& current) = 0;
     /// \cond INTERNAL
     bool _iceD_sendPrivateMessage(::IceInternal::Incoming&, const ::Ice::Current&);
+    /// \endcond
+
+    virtual ::std::string getName(const ::Ice::Current& current) = 0;
+    /// \cond INTERNAL
+    bool _iceD_getName(::IceInternal::Incoming&, const ::Ice::Current&);
     /// \endcond
 
     /// \cond INTERNAL
@@ -492,6 +499,31 @@ public:
 
     /// \cond INTERNAL
     void _iceI_sendPrivateMessage(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<void>>&, const ::std::string&, const ::std::string&, const ::Ice::Context&);
+    /// \endcond
+
+    ::std::string getName(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _makePromiseOutgoing<::std::string>(true, this, &UserPrx::_iceI_getName, context).get();
+    }
+
+    template<template<typename> class P = ::std::promise>
+    auto getNameAsync(const ::Ice::Context& context = ::Ice::noExplicitContext)
+        -> decltype(::std::declval<P<::std::string>>().get_future())
+    {
+        return _makePromiseOutgoing<::std::string, P>(false, this, &UserPrx::_iceI_getName, context);
+    }
+
+    ::std::function<void()>
+    getNameAsync(::std::function<void(::std::string)> response,
+                 ::std::function<void(::std::exception_ptr)> ex = nullptr,
+                 ::std::function<void(bool)> sent = nullptr,
+                 const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _makeLamdaOutgoing<::std::string>(response, ex, sent, this, &chat::UserPrx::_iceI_getName, context);
+    }
+
+    /// \cond INTERNAL
+    void _iceI_getName(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::string>>&, const ::Ice::Context&);
     /// \endcond
 
     /**
@@ -1180,6 +1212,8 @@ typedef ::std::vector<RoomInfo> RoomList;
 
 typedef ::std::vector< ::std::string> UserList;
 
+typedef ::std::map< ::std::string, UserPrx> NickUserDictinary;
+
 typedef ::std::vector<ChatRoomFactoryPrx> RoomFactoryList;
 
 }
@@ -1202,6 +1236,14 @@ typedef ::IceUtil::Handle< Callback_User_sendMessage_Base> Callback_User_sendMes
  */
 class Callback_User_sendPrivateMessage_Base : public virtual ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_User_sendPrivateMessage_Base> Callback_User_sendPrivateMessagePtr;
+
+/**
+ * Base class for asynchronous callback wrapper classes used for calls to
+ * IceProxy::chat::User::begin_getName.
+ * Create a wrapper instance by calling ::chat::newCallback_User_getName.
+ */
+class Callback_User_getName_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_User_getName_Base> Callback_User_getNamePtr;
 
 /**
  * Base class for asynchronous callback wrapper classes used for calls to
@@ -1376,6 +1418,44 @@ public:
 private:
 
     ::Ice::AsyncResultPtr _iceI_begin_sendPrivateMessage(const ::std::string&, const ::std::string&, const ::Ice::Context&, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& cookie = 0, bool sync = false);
+
+public:
+
+    ::std::string getName(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return end_getName(_iceI_begin_getName(context, ::IceInternal::dummyCallback, 0, true));
+    }
+
+    ::Ice::AsyncResultPtr begin_getName(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _iceI_begin_getName(context, ::IceInternal::dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getName(const ::Ice::CallbackPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getName(::Ice::noExplicitContext, cb, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getName(const ::Ice::Context& context, const ::Ice::CallbackPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getName(context, cb, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getName(const ::chat::Callback_User_getNamePtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getName(::Ice::noExplicitContext, cb, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getName(const ::Ice::Context& context, const ::chat::Callback_User_getNamePtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getName(context, cb, cookie);
+    }
+
+    ::std::string end_getName(const ::Ice::AsyncResultPtr& result);
+
+private:
+
+    ::Ice::AsyncResultPtr _iceI_begin_getName(const ::Ice::Context&, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& cookie = 0, bool sync = false);
 
 public:
 
@@ -1913,6 +1993,11 @@ public:
     virtual void sendPrivateMessage(const ::std::string& message, const ::std::string& fromWho, const ::Ice::Current& current = ::Ice::emptyCurrent) = 0;
     /// \cond INTERNAL
     bool _iceD_sendPrivateMessage(::IceInternal::Incoming&, const ::Ice::Current&);
+    /// \endcond
+
+    virtual ::std::string getName(const ::Ice::Current& current = ::Ice::emptyCurrent) = 0;
+    /// \cond INTERNAL
+    bool _iceD_getName(::IceInternal::Incoming&, const ::Ice::Current&);
     /// \endcond
 
     /// \cond INTERNAL
@@ -2551,6 +2636,158 @@ template<class T, typename CT> Callback_User_sendPrivateMessagePtr
 newCallback_User_sendPrivateMessage(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_User_sendPrivateMessage<T, CT>(instance, 0, excb, sentcb);
+}
+
+/**
+ * Type-safe asynchronous callback wrapper class used for calls to
+ * IceProxy::chat::User::begin_getName.
+ * Create a wrapper instance by calling ::chat::newCallback_User_getName.
+ */
+template<class T>
+class CallbackNC_User_getName : public Callback_User_getName_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::std::string&);
+
+    CallbackNC_User_getName(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    /// \cond INTERNAL
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        UserPrx proxy = UserPrx::uncheckedCast(result->getProxy());
+        ::std::string ret;
+        try
+        {
+            ret = proxy->end_getName(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(ret);
+        }
+    }
+    /// \endcond
+
+private:
+
+    Response _response;
+};
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::User::begin_getName.
+ */
+template<class T> Callback_User_getNamePtr
+newCallback_User_getName(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_User_getName<T>(instance, cb, excb, sentcb);
+}
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::User::begin_getName.
+ */
+template<class T> Callback_User_getNamePtr
+newCallback_User_getName(T* instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_User_getName<T>(instance, cb, excb, sentcb);
+}
+
+/**
+ * Type-safe asynchronous callback wrapper class with cookie support used for calls to
+ * IceProxy::chat::User::begin_getName.
+ * Create a wrapper instance by calling ::chat::newCallback_User_getName.
+ */
+template<class T, typename CT>
+class Callback_User_getName : public Callback_User_getName_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::std::string&, const CT&);
+
+    Callback_User_getName(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    /// \cond INTERNAL
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        UserPrx proxy = UserPrx::uncheckedCast(result->getProxy());
+        ::std::string ret;
+        try
+        {
+            ret = proxy->end_getName(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(ret, CT::dynamicCast(result->getCookie()));
+        }
+    }
+    /// \endcond
+
+private:
+
+    Response _response;
+};
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * Use this overload when your callback methods receive a cookie value.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::User::begin_getName.
+ */
+template<class T, typename CT> Callback_User_getNamePtr
+newCallback_User_getName(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_User_getName<T, CT>(instance, cb, excb, sentcb);
+}
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * Use this overload when your callback methods receive a cookie value.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::User::begin_getName.
+ */
+template<class T, typename CT> Callback_User_getNamePtr
+newCallback_User_getName(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_User_getName<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
