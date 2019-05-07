@@ -30,6 +30,7 @@
                 RoomFactoryList roomFactoryList;
                 PortsUtil portsUtil;
                 Ice::CommunicatorPtr ic;
+                NameChatRoomDictionary nameChatDictionary;
                 Ice::ObjectAdapterPtr adapter;
         };
     }

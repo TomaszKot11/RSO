@@ -12,6 +12,7 @@ exception NameAlreadyExists {};
 exception NoSuchUser {};
 exception NickNotAvailable {};
 
+
 sequence<RoomInfo> RoomList;
 sequence<string> UserList;
 
@@ -19,6 +20,7 @@ interface User {
   void sendMessage(string message, string fromWho);
   void sendPrivateMessage(string message, string fromWho);
    // added
+   // TODO: is this necessary?
   string getName();
 };
 
@@ -32,6 +34,9 @@ interface ChatRoom {
     User* getUser(string name) throws NoSuchUser;
     void Leave(string name);
 };
+
+// added
+dictionary<string, ChatRoom*> NameChatRoomDictionary;
 
 interface ChatRoomFactory {
   ChatRoom* newChatRoom(string name);

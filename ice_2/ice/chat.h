@@ -200,6 +200,8 @@ using UserList = ::std::vector<::std::string>;
 
 using NickUserDictinary = ::std::map<::std::string, ::std::shared_ptr<UserPrx>>;
 
+using NameChatRoomDictionary = ::std::map<::std::string, ::std::shared_ptr<ChatRoomPrx>>;
+
 using RoomFactoryList = ::std::vector<::std::shared_ptr<ChatRoomFactoryPrx>>;
 
 using Ice::operator<;
@@ -1213,6 +1215,8 @@ typedef ::std::vector<RoomInfo> RoomList;
 typedef ::std::vector< ::std::string> UserList;
 
 typedef ::std::map< ::std::string, UserPrx> NickUserDictinary;
+
+typedef ::std::map< ::std::string, ChatRoomPrx> NameChatRoomDictionary;
 
 typedef ::std::vector<ChatRoomFactoryPrx> RoomFactoryList;
 

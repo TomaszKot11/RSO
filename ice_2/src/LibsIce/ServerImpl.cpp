@@ -18,16 +18,18 @@ namespace LibsIce {
     }
 
 
-    RoomPrx ServerImpl::CreateRoom(const string& name, const ::Ice::Current&) {
+    ChatRoomPrx ServerImpl::newChatRoom(const string& name, const ::Ice::Current&) {
+        // check if the room is not already present
         for (auto &room : roomList) {
-            if (room->getName() == name) {
-                throw RoomAlreadyExist();
+            if (room.name == name) {
+                throw NameAlreadyExists();
             }
         }
+
         //TODO random select room factory
         if (roomFactoryList.empty()) {
             // if empty - create some factory
-            RoomFactoryPtr object = new RoomFactoryImpl();
+            ChatRoomFactoryPtr object = new RoomFactoryImpl();
             int port = portsUtil.getRandomPort();
             string name = "One";
             ic = Ice::initialize();
@@ -35,18 +37,25 @@ namespace LibsIce {
             adapter->add(object, ic->stringToIdentity("SimpleFactory" + name));
             adapter->activate();
             Ice::ObjectPrx base = ic->stringToProxy("SimpleFactory" + name + ":default -p " + to_string(port));
-            RoomFactoryPrx roomFactory = RoomFactoryPrx::checkedCast(base);
+            ChatRoomFactoryPrx roomFactory = ChatRoomFactoryPrx::checkedCast(base);
             roomFactoryList.push_back(roomFactory);
+
             if(roomFactoryList.empty()) {
-               throw NoResourcesAvailable();
+              //TODO: throw something else
+               throw NameAlreadyExists();
             }
         }
 
-        RoomFactoryPrx roomFactory = roomFactoryList.back();
-        RoomPrx room = roomFactory->createRoom(name);
+        ChatRoomFactoryPrx roomFactory = roomFactoryList.back();
+        ChatRoomPrx room = roomFactory->newChatRoom(name);
         cout << "Creating room with name: " << name << endl;
-        roomList.push_back(room);
+        RoomInfo roomInfo;
+        roomInfo.name = name;
+        roomInfo.activeUsers = 0;
+        roomList.push_back(roomInfo);
+        nameChatDictionary[name] = room;
         cout << "Room " << name << " created." << endl;
+
         return room;
     }
 
@@ -54,21 +63,21 @@ namespace LibsIce {
         return roomList;
     }
 
-    RoomPrx ServerImpl::FindRoom(const string& name, const ::Ice::Current& ) {
+    ChatRoomPrx ServerImpl::getRoom(const string& name, const ::Ice::Current& ) {
         for (auto &room : roomList) {
-            if (room->getName() == name) {
-                return room;
-            }
+            if (room.name == name)
+                return nameChatDictionary[room.name];
         }
-        throw NoSuchRoomExist();
+
+        throw NoSuchRoom();
     }
 
-    void ServerImpl::RegisterRoomFactory(const RoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+    void ServerImpl::registerFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
         roomFactoryList.push_back(roomFactory);
         cout << "Room factory registred " << endl;
     }
 
-    void ServerImpl::UnregisterRoomFactory(const RoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+    void ServerImpl::unregisterFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
         for (auto registredFactoryIt = roomFactoryList.begin(); registredFactoryIt != roomFactoryList.end(); ) {
             if (*registredFactoryIt == roomFactory) {
                 registredFactoryIt = roomFactoryList.erase(registredFactoryIt);

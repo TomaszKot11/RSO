@@ -7,7 +7,7 @@
     #include "RoomFactoryImpl.h"
 
     using namespace std;
-    using namespace Chat;
+    using namespace chat;
 
     namespace LibsIce {
         class RoomImpl : public virtual ChatRoom {
