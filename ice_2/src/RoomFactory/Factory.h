@@ -17,10 +17,10 @@
                 void registerRoomFactory();
                 ~Factory();
             private:
-                ServerPrx server;
+                chatServerPrx server;
                 Ice::CommunicatorPtr iceCommunicator;
                 Ice::ObjectAdapterPtr adapter;
-                RoomFactoryPrx roomFactory;
+                ChatRoomFactoryPrx roomFactory;
                 PortsUtil portsUtil;
         };
     }

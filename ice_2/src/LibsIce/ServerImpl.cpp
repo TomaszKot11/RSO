@@ -42,7 +42,8 @@ namespace LibsIce {
 
             if(roomFactoryList.empty()) {
               //TODO: throw something else
-               throw NameAlreadyExists();
+              throw "There is no room factories.";
+              // throw NameAlreadyExists();
             }
         }
 

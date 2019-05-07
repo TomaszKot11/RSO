@@ -8,7 +8,7 @@ namespace RoomFactory {
         roomFactory = ChatRoomFactoryPrx::uncheckedCast(adapter->addWithUUID(object));
         adapter->add(object, iceCommunicator->stringToIdentity("RoomFactory"));
         adapter->activate();
-        server->RegisterRoomFactory(roomFactory);
+        server->registerFactory(roomFactory);
         iceCommunicator->waitForShutdown();
     }
 
@@ -17,7 +17,7 @@ namespace RoomFactory {
             iceCommunicator = Ice::initialize();
             int serverPort = portsUtil.getServerPort();
             Ice::ObjectPrx base = iceCommunicator->stringToProxy("Server:default -p " + to_string(serverPort));
-            server = ServerPrx::checkedCast(base);
+            server = chatServerPrx::checkedCast(base);
             if (!server) {
                 throw "Invalid proxy";
             }
@@ -35,6 +35,6 @@ namespace RoomFactory {
     }
 
     Factory::~Factory() {
-        server->UnregisterRoomFactory(roomFactory);
+        server->unregisterFactory(roomFactory);
     }
 }
