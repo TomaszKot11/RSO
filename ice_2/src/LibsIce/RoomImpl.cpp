@@ -50,11 +50,15 @@ namespace LibsIce {
     void RoomImpl::postMessage(const string& message,
                               const string& fromWho,
                                const ::Ice::Current&) {
+       bool fromWhoPresent = false;
         // check if sender is inside the room
-         for(auto const& value: users) {
+        for(auto const& value: users) {
           if(value == fromWho)
-            throw NoSuchUser();
+           fromWhoPresent = true;
         }
+
+      if(!fromWhoPresent)
+        throw NoSuchUser();
 
       auto it = nickUserDictionary.begin();
       while (it != nickUserDictionary.end()) {
