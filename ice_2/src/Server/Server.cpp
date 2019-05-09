@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
         int serverPort = portsUtil.getServerPort();
         Ice::ObjectAdapterPtr adapter = iceCommunicator->createObjectAdapterWithEndpoints("ServerAdapter", "default -p " + to_string(serverPort));
         Ice::ObjectPtr object = new ServerImpl();
-        adapter->add(object, iceCommunicator->stringToIdentity("Server"));
+        adapter->add(object, Ice::stringToIdentity("Server"));
         adapter->activate();
         iceCommunicator->waitForShutdown();
     } catch (const char* msg) {

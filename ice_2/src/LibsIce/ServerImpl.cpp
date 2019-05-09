@@ -34,7 +34,7 @@ namespace LibsIce {
             string name = "One";
             ic = Ice::initialize();
             adapter = ic->createObjectAdapterWithEndpoints("SimpleFactory" + name, "default -p " + to_string(port));
-            adapter->add(object, ic->stringToIdentity("SimpleFactory" + name));
+            adapter->add(object, Ice::stringToIdentity("SimpleFactory" + name));
             adapter->activate();
             Ice::ObjectPrx base = ic->stringToProxy("SimpleFactory" + name + ":default -p " + to_string(port));
             ChatRoomFactoryPrx roomFactory = ChatRoomFactoryPrx::checkedCast(base);

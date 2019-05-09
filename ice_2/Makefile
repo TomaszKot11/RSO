@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -Wall #-Werror -Wpedantic -Wextra
+CFLAGS = -g #-Wall -Werror -Wpedantic -Wextra
 LIBSFLAGS = -pthread -lIce -std=c++11 # -lIceUtil
 TARGETDIR = Debug/
 TARGETCLIENT = Debug/client

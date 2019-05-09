@@ -6,7 +6,7 @@ namespace RoomFactory {
         int port = portsUtil.getRandomPort();
         adapter = iceCommunicator->createObjectAdapterWithEndpoints("RoomFactory", "default -p " + to_string(port));
         roomFactory = ChatRoomFactoryPrx::uncheckedCast(adapter->addWithUUID(object));
-        adapter->add(object, iceCommunicator->stringToIdentity("RoomFactory"));
+        adapter->add(object,Ice::stringToIdentity("RoomFactory"));
         adapter->activate();
         server->registerFactory(roomFactory);
         iceCommunicator->waitForShutdown();
