@@ -1,6 +1,6 @@
 #include "UserImpl.h"
 
-namespace LibsIce {
+namespace Shared {
     string UserImpl::getName(const Ice::Current&) {
         return name;
     }

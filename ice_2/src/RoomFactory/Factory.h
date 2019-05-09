@@ -8,7 +8,7 @@
 
     using namespace std;
     using namespace chat;
-    using namespace LibsIce;
+    using namespace Shared;
 
     namespace RoomFactory {
         class Factory {

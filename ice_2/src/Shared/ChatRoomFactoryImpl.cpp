@@ -1,6 +1,6 @@
 #include "ChatRoomFactoryImpl.h"
 
-namespace LibsIce {
+namespace Shared {
     ChatRoomPrx ChatRoomFactoryImpl::newChatRoom(const string& name, const ::Ice::Current&) {
         ChatRoomPtr object = new ChatRoomImpl(name);
         cout << "RoomFactory::Creating room " << name << endl;

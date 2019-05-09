@@ -1,19 +1,19 @@
 CC = g++
 CFLAGS = -g #-Wall -Werror -Wpedantic -Wextra
 LIBSFLAGS = -pthread -lIce -std=c++11 # -lIceUtil
-TARGETDIR = Debug/
-TARGETCLIENT = Debug/client
-TARGETSERVER = Debug/server
-TARGETFACTORY = Debug/factory
+TARGETDIR = bin/
+TARGETCLIENT = bin/client
+TARGETSERVER = bin/server
+TARGETFACTORY = bin/factory
 CLIENTSRCDIR = src/Client
 SERVERSRCDIR = src/Server
 FACTORYSRCDIR = src/RoomFactory
-LIBSICE = src/LibsIce
+SHARED = src/Shared
 ICEDIR = ice
 
-INCLUDES = -I $(CLIENTSRCDIR) -I $(ICEDIR) -I $(LIBSICE) -I $(SERVERSRCDIR) -I $(FACTORYSRCDIR)
-SRCICE = $(ICEDIR)/chat.cpp $(LIBSICE)/UserImpl.cpp $(LIBSICE)/ChatServerImpl.cpp $(LIBSICE)/ChatRoomFactoryImpl.cpp $(LIBSICE)/ChatRoomImpl.cpp
-SRCSCLIENT = $(SRCICE) $(CLIENTSRCDIR)/Client.cpp  $(CLIENTSRCDIR)/main.cpp $(CLIENTSRCDIR)/Menu.cpp
+INCLUDES = -I $(CLIENTSRCDIR) -I $(ICEDIR) -I $(SHARED) -I $(SERVERSRCDIR) -I $(FACTORYSRCDIR)
+SRCICE = $(ICEDIR)/chat.cpp $(SHARED)/UserImpl.cpp $(SHARED)/ChatServerImpl.cpp $(SHARED)/ChatRoomFactoryImpl.cpp $(SHARED)/ChatRoomImpl.cpp
+SRCSCLIENT = $(SRCICE) $(CLIENTSRCDIR)/Client.cpp  $(CLIENTSRCDIR)/client_runner.cpp $(CLIENTSRCDIR)/Menu.cpp
 SRCSSERVER = $(SRCICE) $(SERVERSRCDIR)/server_runner.cpp
 SRCFACTORY = $(SRCICE) $(FACTORYSRCDIR)/main.cpp $(FACTORYSRCDIR)/Factory.cpp
 SRC = $(SRCSCLIENT) $(SRCSSERVER)
@@ -22,7 +22,7 @@ OBJS = $(SRC:.cpp=.o)
 .PHONY: clean All
 
 All: $(TARGETCLIENT) $(TARGETSERVER) $(TARGETFACTORY)
-        @echo "----------Building project:[ Zadanie 2 Chat - Debug ]----------"
+        @echo "----------Building project:[ Zadanie 2 Chat - bin ]----------"
 
 $(TARGETCLIENT):
 		mkdir -p $(TARGETDIR)
@@ -41,7 +41,7 @@ $(TARGETFACTORY):
 		$(CC) $(CFLAGS) $(INCLUDES) -o $< -o $@
 
 clean:
-		@echo "----------Cleaning project:[ Zadanie 2 Chat - Debug ]----------"
+		@echo "----------Cleaning project:[ Zadanie 2 Chat - bin ]----------"
 		$(RM) *.o *~ $(TARGETCLIENT)
 		$(RM) *.o *~ $(TARGETSERVER)
 		$(RM) *.o *~ $(TARGETFACTORY)

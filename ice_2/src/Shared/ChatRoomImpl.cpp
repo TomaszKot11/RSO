@@ -1,6 +1,6 @@
 #include "ChatRoomImpl.h"
 
-namespace LibsIce {
+namespace Shared {
     UserList ChatRoomImpl::listUsers(const ::Ice::Current&) {
         return users;
     }

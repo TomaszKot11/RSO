@@ -4,7 +4,7 @@
     #include <random>
     using namespace std;
 
-    namespace LibsIce {
+    namespace Shared {
         class PortsUtil {
             public:
                 inline int getServerPort() const {

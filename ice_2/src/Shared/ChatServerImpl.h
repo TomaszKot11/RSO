@@ -11,7 +11,7 @@
     using namespace chat;
     using namespace std;
 
-    namespace LibsIce {
+    namespace Shared {
         class ChatServerImpl : public virtual chatServer {
             public:
                 ChatServerImpl();

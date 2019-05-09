@@ -2,7 +2,7 @@
 
 namespace RoomFactory {
     void Factory::registerRoomFactory() {
-        ChatRoomFactoryPtr object = new LibsIce::ChatRoomFactoryImpl();
+        ChatRoomFactoryPtr object = new Shared::ChatRoomFactoryImpl();
         int port = portsUtil.getRandomPort();
         adapter = iceCommunicator->createObjectAdapterWithEndpoints("RoomFactory", "default -p " + to_string(port));
         roomFactory = ChatRoomFactoryPrx::uncheckedCast(adapter->addWithUUID(object));

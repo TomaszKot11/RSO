@@ -9,7 +9,7 @@
 
     using namespace chat;
     using namespace std;
-    using namespace LibsIce;
+    using namespace Shared;
 
   namespace ClientApp {
       class Client {

@@ -5,7 +5,7 @@
 
 using namespace std;
 using namespace chat;
-using namespace LibsIce;
+using namespace Shared;
 
 int main(int argc, char* argv[]) {
     int status = 0;

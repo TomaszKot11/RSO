@@ -1,7 +1,7 @@
 #include "ChatServerImpl.h"
 #include "ChatRoomImpl.h"
 
-namespace LibsIce {
+namespace Shared {
 
     ChatServerImpl::ChatServerImpl() {
         ic = Ice::initialize();

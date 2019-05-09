@@ -9,7 +9,7 @@
     using namespace std;
     using namespace chat;
 
-    namespace LibsIce {
+    namespace Shared {
         class ChatRoomImpl : public virtual ChatRoom {
             public:
                 ChatRoomImpl(const string &n) : roomName(n) {}

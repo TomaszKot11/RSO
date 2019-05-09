@@ -9,7 +9,7 @@
     using namespace chat;
     using namespace std;
 
-    namespace LibsIce {
+    namespace Shared {
         class UserImpl : public virtual User {
             public:
                 UserImpl(const string& n) : name(n){};
