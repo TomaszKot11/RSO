@@ -17,7 +17,7 @@
                 void registerRoomFactory();
                 ~Factory();
             private:
-                chatServerPrx server;
+                ChatServerPrx server;
                 Ice::CommunicatorPtr iceCommunicator;
                 Ice::ObjectAdapterPtr adapter;
                 ChatRoomFactoryPrx roomFactory;

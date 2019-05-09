@@ -22,7 +22,7 @@ OBJS = $(SRC:.cpp=.o)
 .PHONY: clean All
 
 All: $(TARGETCLIENT) $(TARGETSERVER) $(TARGETFACTORY)
-        @echo "----------Building project:[ Zadanie 2 Chat - bin ]----------"
+        @echo "----------Building project:[ Chat ICE ]----------"
 
 $(TARGETCLIENT):
 		mkdir -p $(TARGETDIR)
@@ -41,7 +41,7 @@ $(TARGETFACTORY):
 		$(CC) $(CFLAGS) $(INCLUDES) -o $< -o $@
 
 clean:
-		@echo "----------Cleaning project:[ Zadanie 2 Chat - bin ]----------"
+		@echo "----------Cleaning project:[ Chat ICE ]----------"
 		$(RM) *.o *~ $(TARGETCLIENT)
 		$(RM) *.o *~ $(TARGETSERVER)
 		$(RM) *.o *~ $(TARGETFACTORY)

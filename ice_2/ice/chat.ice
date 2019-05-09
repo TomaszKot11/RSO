@@ -45,7 +45,7 @@ interface ChatRoomFactory {
 // added
 sequence<ChatRoomFactory*> RoomFactoryList;
 
-interface chatServer {
+interface ChatServer {
   RoomList getRooms();
   ChatRoom* getRoom(string name) throws NoSuchRoom;
   ChatRoom* newChatRoom(string name) throws NameAlreadyExists;

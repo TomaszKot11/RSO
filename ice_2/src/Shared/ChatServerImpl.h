@@ -12,7 +12,7 @@
     using namespace std;
 
     namespace Shared {
-        class ChatServerImpl : public virtual chatServer {
+        class ChatServerImpl : public virtual ChatServer {
             public:
                 ChatServerImpl();
                 virtual void registerFactory(const ChatRoomFactoryPrx&,

@@ -58,8 +58,8 @@ class ChatRoom;
 class ChatRoomPrx;
 class ChatRoomFactory;
 class ChatRoomFactoryPrx;
-class chatServer;
-class chatServerPrx;
+class ChatServer;
+class ChatServerPrx;
 
 }
 
@@ -378,11 +378,11 @@ public:
     /// \endcond
 };
 
-class chatServer : public virtual ::Ice::Object
+class ChatServer : public virtual ::Ice::Object
 {
 public:
 
-    using ProxyType = chatServerPrx;
+    using ProxyType = ChatServerPrx;
 
     /**
      * Determines whether this object supports an interface with the given Slice type ID.
@@ -739,20 +739,20 @@ protected:
     /// \endcond
 };
 
-class chatServerPrx : public virtual ::Ice::Proxy<chatServerPrx, ::Ice::ObjectPrx>
+class ChatServerPrx : public virtual ::Ice::Proxy<ChatServerPrx, ::Ice::ObjectPrx>
 {
 public:
 
     RoomList getRooms(const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<RoomList>(true, this, &chatServerPrx::_iceI_getRooms, context).get();
+        return _makePromiseOutgoing<RoomList>(true, this, &ChatServerPrx::_iceI_getRooms, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
     auto getRoomsAsync(const ::Ice::Context& context = ::Ice::noExplicitContext)
         -> decltype(::std::declval<P<RoomList>>().get_future())
     {
-        return _makePromiseOutgoing<RoomList, P>(false, this, &chatServerPrx::_iceI_getRooms, context);
+        return _makePromiseOutgoing<RoomList, P>(false, this, &ChatServerPrx::_iceI_getRooms, context);
     }
 
     ::std::function<void()>
@@ -761,7 +761,7 @@ public:
                   ::std::function<void(bool)> sent = nullptr,
                   const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<RoomList>(response, ex, sent, this, &chat::chatServerPrx::_iceI_getRooms, context);
+        return _makeLamdaOutgoing<RoomList>(response, ex, sent, this, &chat::ChatServerPrx::_iceI_getRooms, context);
     }
 
     /// \cond INTERNAL
@@ -770,14 +770,14 @@ public:
 
     ::std::shared_ptr<ChatRoomPrx> getRoom(const ::std::string& name, const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>>(true, this, &chatServerPrx::_iceI_getRoom, name, context).get();
+        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>>(true, this, &ChatServerPrx::_iceI_getRoom, name, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
     auto getRoomAsync(const ::std::string& name, const ::Ice::Context& context = ::Ice::noExplicitContext)
         -> decltype(::std::declval<P<::std::shared_ptr<ChatRoomPrx>>>().get_future())
     {
-        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>, P>(false, this, &chatServerPrx::_iceI_getRoom, name, context);
+        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>, P>(false, this, &ChatServerPrx::_iceI_getRoom, name, context);
     }
 
     ::std::function<void()>
@@ -787,7 +787,7 @@ public:
                  ::std::function<void(bool)> sent = nullptr,
                  const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<::std::shared_ptr<ChatRoomPrx>>(response, ex, sent, this, &chat::chatServerPrx::_iceI_getRoom, name, context);
+        return _makeLamdaOutgoing<::std::shared_ptr<ChatRoomPrx>>(response, ex, sent, this, &chat::ChatServerPrx::_iceI_getRoom, name, context);
     }
 
     /// \cond INTERNAL
@@ -796,14 +796,14 @@ public:
 
     ::std::shared_ptr<ChatRoomPrx> newChatRoom(const ::std::string& name, const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>>(true, this, &chatServerPrx::_iceI_newChatRoom, name, context).get();
+        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>>(true, this, &ChatServerPrx::_iceI_newChatRoom, name, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
     auto newChatRoomAsync(const ::std::string& name, const ::Ice::Context& context = ::Ice::noExplicitContext)
         -> decltype(::std::declval<P<::std::shared_ptr<ChatRoomPrx>>>().get_future())
     {
-        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>, P>(false, this, &chatServerPrx::_iceI_newChatRoom, name, context);
+        return _makePromiseOutgoing<::std::shared_ptr<ChatRoomPrx>, P>(false, this, &ChatServerPrx::_iceI_newChatRoom, name, context);
     }
 
     ::std::function<void()>
@@ -813,7 +813,7 @@ public:
                      ::std::function<void(bool)> sent = nullptr,
                      const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<::std::shared_ptr<ChatRoomPrx>>(response, ex, sent, this, &chat::chatServerPrx::_iceI_newChatRoom, name, context);
+        return _makeLamdaOutgoing<::std::shared_ptr<ChatRoomPrx>>(response, ex, sent, this, &chat::ChatServerPrx::_iceI_newChatRoom, name, context);
     }
 
     /// \cond INTERNAL
@@ -822,14 +822,14 @@ public:
 
     void registerFactory(const ::std::shared_ptr<ChatRoomFactoryPrx>& crf, const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        _makePromiseOutgoing<void>(true, this, &chatServerPrx::_iceI_registerFactory, crf, context).get();
+        _makePromiseOutgoing<void>(true, this, &ChatServerPrx::_iceI_registerFactory, crf, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
     auto registerFactoryAsync(const ::std::shared_ptr<ChatRoomFactoryPrx>& crf, const ::Ice::Context& context = ::Ice::noExplicitContext)
         -> decltype(::std::declval<P<void>>().get_future())
     {
-        return _makePromiseOutgoing<void, P>(false, this, &chatServerPrx::_iceI_registerFactory, crf, context);
+        return _makePromiseOutgoing<void, P>(false, this, &ChatServerPrx::_iceI_registerFactory, crf, context);
     }
 
     ::std::function<void()>
@@ -839,7 +839,7 @@ public:
                          ::std::function<void(bool)> sent = nullptr,
                          const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<void>(response, ex, sent, this, &chat::chatServerPrx::_iceI_registerFactory, crf, context);
+        return _makeLamdaOutgoing<void>(response, ex, sent, this, &chat::ChatServerPrx::_iceI_registerFactory, crf, context);
     }
 
     /// \cond INTERNAL
@@ -848,14 +848,14 @@ public:
 
     void unregisterFactory(const ::std::shared_ptr<ChatRoomFactoryPrx>& crf, const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        _makePromiseOutgoing<void>(true, this, &chatServerPrx::_iceI_unregisterFactory, crf, context).get();
+        _makePromiseOutgoing<void>(true, this, &ChatServerPrx::_iceI_unregisterFactory, crf, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
     auto unregisterFactoryAsync(const ::std::shared_ptr<ChatRoomFactoryPrx>& crf, const ::Ice::Context& context = ::Ice::noExplicitContext)
         -> decltype(::std::declval<P<void>>().get_future())
     {
-        return _makePromiseOutgoing<void, P>(false, this, &chatServerPrx::_iceI_unregisterFactory, crf, context);
+        return _makePromiseOutgoing<void, P>(false, this, &ChatServerPrx::_iceI_unregisterFactory, crf, context);
     }
 
     ::std::function<void()>
@@ -865,7 +865,7 @@ public:
                            ::std::function<void(bool)> sent = nullptr,
                            const ::Ice::Context& context = ::Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<void>(response, ex, sent, this, &chat::chatServerPrx::_iceI_unregisterFactory, crf, context);
+        return _makeLamdaOutgoing<void>(response, ex, sent, this, &chat::ChatServerPrx::_iceI_unregisterFactory, crf, context);
     }
 
     /// \cond INTERNAL
@@ -881,8 +881,8 @@ public:
 protected:
 
     /// \cond INTERNAL
-    chatServerPrx() = default;
-    friend ::std::shared_ptr<chatServerPrx> IceInternal::createProxy<chatServerPrx>();
+    ChatServerPrx() = default;
+    friend ::std::shared_ptr<ChatServerPrx> IceInternal::createProxy<ChatServerPrx>();
 
     virtual ::std::shared_ptr<::Ice::ObjectPrx> _newInstance() const override;
     /// \endcond
@@ -927,8 +927,8 @@ using ChatRoomPrxPtr = ::std::shared_ptr<ChatRoomPrx>;
 using ChatRoomFactoryPtr = ::std::shared_ptr<ChatRoomFactory>;
 using ChatRoomFactoryPrxPtr = ::std::shared_ptr<ChatRoomFactoryPrx>;
 
-using chatServerPtr = ::std::shared_ptr<chatServer>;
-using chatServerPrxPtr = ::std::shared_ptr<chatServerPrx>;
+using ChatServerPtr = ::std::shared_ptr<ChatServer>;
+using ChatServerPrxPtr = ::std::shared_ptr<ChatServerPrx>;
 
 }
 /// \endcond
@@ -959,10 +959,10 @@ void _readProxy(::Ice::InputStream*, ::IceInternal::ProxyHandle< ChatRoomFactory
 ::IceProxy::Ice::Object* upCast(ChatRoomFactory*);
 /// \endcond
 
-class chatServer;
+class ChatServer;
 /// \cond INTERNAL
-void _readProxy(::Ice::InputStream*, ::IceInternal::ProxyHandle< chatServer>&);
-::IceProxy::Ice::Object* upCast(chatServer*);
+void _readProxy(::Ice::InputStream*, ::IceInternal::ProxyHandle< ChatServer>&);
+::IceProxy::Ice::Object* upCast(ChatServer*);
 /// \endcond
 
 }
@@ -1005,15 +1005,15 @@ typedef ChatRoomFactoryPrx ChatRoomFactoryPrxPtr;
 void _icePatchObjectPtr(ChatRoomFactoryPtr&, const ::Ice::ObjectPtr&);
 /// \endcond
 
-class chatServer;
+class ChatServer;
 /// \cond INTERNAL
-::Ice::Object* upCast(chatServer*);
+::Ice::Object* upCast(ChatServer*);
 /// \endcond
-typedef ::IceInternal::Handle< chatServer> chatServerPtr;
-typedef ::IceInternal::ProxyHandle< ::IceProxy::chat::chatServer> chatServerPrx;
-typedef chatServerPrx chatServerPrxPtr;
+typedef ::IceInternal::Handle< ChatServer> ChatServerPtr;
+typedef ::IceInternal::ProxyHandle< ::IceProxy::chat::ChatServer> ChatServerPrx;
+typedef ChatServerPrx ChatServerPrxPtr;
 /// \cond INTERNAL
-void _icePatchObjectPtr(chatServerPtr&, const ::Ice::ObjectPtr&);
+void _icePatchObjectPtr(ChatServerPtr&, const ::Ice::ObjectPtr&);
 /// \endcond
 
 }
@@ -1299,43 +1299,43 @@ typedef ::IceUtil::Handle< Callback_ChatRoomFactory_newChatRoom_Base> Callback_C
 
 /**
  * Base class for asynchronous callback wrapper classes used for calls to
- * IceProxy::chat::chatServer::begin_getRooms.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_getRooms.
+ * IceProxy::chat::ChatServer::begin_getRooms.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_getRooms.
  */
-class Callback_chatServer_getRooms_Base : public virtual ::IceInternal::CallbackBase { };
-typedef ::IceUtil::Handle< Callback_chatServer_getRooms_Base> Callback_chatServer_getRoomsPtr;
+class Callback_ChatServer_getRooms_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ChatServer_getRooms_Base> Callback_ChatServer_getRoomsPtr;
 
 /**
  * Base class for asynchronous callback wrapper classes used for calls to
- * IceProxy::chat::chatServer::begin_getRoom.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_getRoom.
+ * IceProxy::chat::ChatServer::begin_getRoom.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_getRoom.
  */
-class Callback_chatServer_getRoom_Base : public virtual ::IceInternal::CallbackBase { };
-typedef ::IceUtil::Handle< Callback_chatServer_getRoom_Base> Callback_chatServer_getRoomPtr;
+class Callback_ChatServer_getRoom_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ChatServer_getRoom_Base> Callback_ChatServer_getRoomPtr;
 
 /**
  * Base class for asynchronous callback wrapper classes used for calls to
- * IceProxy::chat::chatServer::begin_newChatRoom.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_newChatRoom.
+ * IceProxy::chat::ChatServer::begin_newChatRoom.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_newChatRoom.
  */
-class Callback_chatServer_newChatRoom_Base : public virtual ::IceInternal::CallbackBase { };
-typedef ::IceUtil::Handle< Callback_chatServer_newChatRoom_Base> Callback_chatServer_newChatRoomPtr;
+class Callback_ChatServer_newChatRoom_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ChatServer_newChatRoom_Base> Callback_ChatServer_newChatRoomPtr;
 
 /**
  * Base class for asynchronous callback wrapper classes used for calls to
- * IceProxy::chat::chatServer::begin_registerFactory.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_registerFactory.
+ * IceProxy::chat::ChatServer::begin_registerFactory.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_registerFactory.
  */
-class Callback_chatServer_registerFactory_Base : public virtual ::IceInternal::CallbackBase { };
-typedef ::IceUtil::Handle< Callback_chatServer_registerFactory_Base> Callback_chatServer_registerFactoryPtr;
+class Callback_ChatServer_registerFactory_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ChatServer_registerFactory_Base> Callback_ChatServer_registerFactoryPtr;
 
 /**
  * Base class for asynchronous callback wrapper classes used for calls to
- * IceProxy::chat::chatServer::begin_unregisterFactory.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_unregisterFactory.
+ * IceProxy::chat::ChatServer::begin_unregisterFactory.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_unregisterFactory.
  */
-class Callback_chatServer_unregisterFactory_Base : public virtual ::IceInternal::CallbackBase { };
-typedef ::IceUtil::Handle< Callback_chatServer_unregisterFactory_Base> Callback_chatServer_unregisterFactoryPtr;
+class Callback_ChatServer_unregisterFactory_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ChatServer_unregisterFactory_Base> Callback_ChatServer_unregisterFactoryPtr;
 
 }
 
@@ -1738,7 +1738,7 @@ protected:
     /// \endcond
 };
 
-class chatServer : public virtual ::Ice::Proxy<chatServer, ::IceProxy::Ice::Object>
+class ChatServer : public virtual ::Ice::Proxy<ChatServer, ::IceProxy::Ice::Object>
 {
 public:
 
@@ -1762,12 +1762,12 @@ public:
         return _iceI_begin_getRooms(context, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getRooms(const ::chat::Callback_chatServer_getRoomsPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_getRooms(const ::chat::Callback_ChatServer_getRoomsPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_getRooms(::Ice::noExplicitContext, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getRooms(const ::Ice::Context& context, const ::chat::Callback_chatServer_getRoomsPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_getRooms(const ::Ice::Context& context, const ::chat::Callback_ChatServer_getRoomsPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_getRooms(context, cb, cookie);
     }
@@ -1800,12 +1800,12 @@ public:
         return _iceI_begin_getRoom(name, context, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getRoom(const ::std::string& name, const ::chat::Callback_chatServer_getRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_getRoom(const ::std::string& name, const ::chat::Callback_ChatServer_getRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_getRoom(name, ::Ice::noExplicitContext, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_getRoom(const ::std::string& name, const ::Ice::Context& context, const ::chat::Callback_chatServer_getRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_getRoom(const ::std::string& name, const ::Ice::Context& context, const ::chat::Callback_ChatServer_getRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_getRoom(name, context, cb, cookie);
     }
@@ -1838,12 +1838,12 @@ public:
         return _iceI_begin_newChatRoom(name, context, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_newChatRoom(const ::std::string& name, const ::chat::Callback_chatServer_newChatRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_newChatRoom(const ::std::string& name, const ::chat::Callback_ChatServer_newChatRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_newChatRoom(name, ::Ice::noExplicitContext, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_newChatRoom(const ::std::string& name, const ::Ice::Context& context, const ::chat::Callback_chatServer_newChatRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_newChatRoom(const ::std::string& name, const ::Ice::Context& context, const ::chat::Callback_ChatServer_newChatRoomPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_newChatRoom(name, context, cb, cookie);
     }
@@ -1876,12 +1876,12 @@ public:
         return _iceI_begin_registerFactory(crf, context, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_registerFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::chat::Callback_chatServer_registerFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_registerFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::chat::Callback_ChatServer_registerFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_registerFactory(crf, ::Ice::noExplicitContext, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_registerFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::Ice::Context& context, const ::chat::Callback_chatServer_registerFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_registerFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::Ice::Context& context, const ::chat::Callback_ChatServer_registerFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_registerFactory(crf, context, cb, cookie);
     }
@@ -1914,12 +1914,12 @@ public:
         return _iceI_begin_unregisterFactory(crf, context, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_unregisterFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::chat::Callback_chatServer_unregisterFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_unregisterFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::chat::Callback_ChatServer_unregisterFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_unregisterFactory(crf, ::Ice::noExplicitContext, cb, cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_unregisterFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::Ice::Context& context, const ::chat::Callback_chatServer_unregisterFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    ::Ice::AsyncResultPtr begin_unregisterFactory(const ::chat::ChatRoomFactoryPrx& crf, const ::Ice::Context& context, const ::chat::Callback_ChatServer_unregisterFactoryPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
     {
         return _iceI_begin_unregisterFactory(crf, context, cb, cookie);
     }
@@ -2180,14 +2180,14 @@ inline bool operator<(const ChatRoomFactory& lhs, const ChatRoomFactory& rhs)
 }
 /// \endcond
 
-class chatServer : public virtual ::Ice::Object
+class ChatServer : public virtual ::Ice::Object
 {
 public:
 
-    typedef chatServerPrx ProxyType;
-    typedef chatServerPtr PointerType;
+    typedef ChatServerPrx ProxyType;
+    typedef ChatServerPtr PointerType;
 
-    virtual ~chatServer();
+    virtual ~ChatServer();
 
     /**
      * Determines whether this object supports an interface with the given Slice type ID.
@@ -2255,12 +2255,12 @@ protected:
 };
 
 /// \cond INTERNAL
-inline bool operator==(const chatServer& lhs, const chatServer& rhs)
+inline bool operator==(const ChatServer& lhs, const ChatServer& rhs)
 {
     return static_cast<const ::Ice::Object&>(lhs) == static_cast<const ::Ice::Object&>(rhs);
 }
 
-inline bool operator<(const chatServer& lhs, const chatServer& rhs)
+inline bool operator<(const ChatServer& lhs, const ChatServer& rhs)
 {
     return static_cast<const ::Ice::Object&>(lhs) < static_cast<const ::Ice::Object&>(rhs);
 }
@@ -3768,11 +3768,11 @@ newCallback_ChatRoomFactory_newChatRoom(T* instance, void (T::*cb)(const ChatRoo
 
 /**
  * Type-safe asynchronous callback wrapper class used for calls to
- * IceProxy::chat::chatServer::begin_getRooms.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_getRooms.
+ * IceProxy::chat::ChatServer::begin_getRooms.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_getRooms.
  */
 template<class T>
-class CallbackNC_chatServer_getRooms : public Callback_chatServer_getRooms_Base, public ::IceInternal::TwowayCallbackNC<T>
+class CallbackNC_ChatServer_getRooms : public Callback_ChatServer_getRooms_Base, public ::IceInternal::TwowayCallbackNC<T>
 {
 public:
 
@@ -3782,7 +3782,7 @@ public:
     typedef void (T::*Sent)(bool);
     typedef void (T::*Response)(const RoomList&);
 
-    CallbackNC_chatServer_getRooms(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    CallbackNC_ChatServer_getRooms(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
     {
     }
@@ -3790,7 +3790,7 @@ public:
     /// \cond INTERNAL
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        chatServerPrx proxy = chatServerPrx::uncheckedCast(result->getProxy());
+        ChatServerPrx proxy = ChatServerPrx::uncheckedCast(result->getProxy());
         RoomList ret;
         try
         {
@@ -3819,12 +3819,12 @@ private:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRooms.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRooms.
  */
-template<class T> Callback_chatServer_getRoomsPtr
-newCallback_chatServer_getRooms(const IceUtil::Handle<T>& instance, void (T::*cb)(const RoomList&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_getRoomsPtr
+newCallback_ChatServer_getRooms(const IceUtil::Handle<T>& instance, void (T::*cb)(const RoomList&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_getRooms<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_getRooms<T>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -3833,21 +3833,21 @@ newCallback_chatServer_getRooms(const IceUtil::Handle<T>& instance, void (T::*cb
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRooms.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRooms.
  */
-template<class T> Callback_chatServer_getRoomsPtr
-newCallback_chatServer_getRooms(T* instance, void (T::*cb)(const RoomList&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_getRoomsPtr
+newCallback_ChatServer_getRooms(T* instance, void (T::*cb)(const RoomList&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_getRooms<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_getRooms<T>(instance, cb, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class with cookie support used for calls to
- * IceProxy::chat::chatServer::begin_getRooms.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_getRooms.
+ * IceProxy::chat::ChatServer::begin_getRooms.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_getRooms.
  */
 template<class T, typename CT>
-class Callback_chatServer_getRooms : public Callback_chatServer_getRooms_Base, public ::IceInternal::TwowayCallback<T, CT>
+class Callback_ChatServer_getRooms : public Callback_ChatServer_getRooms_Base, public ::IceInternal::TwowayCallback<T, CT>
 {
 public:
 
@@ -3857,7 +3857,7 @@ public:
     typedef void (T::*Sent)(bool , const CT&);
     typedef void (T::*Response)(const RoomList&, const CT&);
 
-    Callback_chatServer_getRooms(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    Callback_ChatServer_getRooms(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
     {
     }
@@ -3865,7 +3865,7 @@ public:
     /// \cond INTERNAL
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        chatServerPrx proxy = chatServerPrx::uncheckedCast(result->getProxy());
+        ChatServerPrx proxy = ChatServerPrx::uncheckedCast(result->getProxy());
         RoomList ret;
         try
         {
@@ -3895,12 +3895,12 @@ private:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRooms.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRooms.
  */
-template<class T, typename CT> Callback_chatServer_getRoomsPtr
-newCallback_chatServer_getRooms(const IceUtil::Handle<T>& instance, void (T::*cb)(const RoomList&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_getRoomsPtr
+newCallback_ChatServer_getRooms(const IceUtil::Handle<T>& instance, void (T::*cb)(const RoomList&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_getRooms<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_getRooms<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -3910,21 +3910,21 @@ newCallback_chatServer_getRooms(const IceUtil::Handle<T>& instance, void (T::*cb
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRooms.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRooms.
  */
-template<class T, typename CT> Callback_chatServer_getRoomsPtr
-newCallback_chatServer_getRooms(T* instance, void (T::*cb)(const RoomList&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_getRoomsPtr
+newCallback_ChatServer_getRooms(T* instance, void (T::*cb)(const RoomList&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_getRooms<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_getRooms<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class used for calls to
- * IceProxy::chat::chatServer::begin_getRoom.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_getRoom.
+ * IceProxy::chat::ChatServer::begin_getRoom.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_getRoom.
  */
 template<class T>
-class CallbackNC_chatServer_getRoom : public Callback_chatServer_getRoom_Base, public ::IceInternal::TwowayCallbackNC<T>
+class CallbackNC_ChatServer_getRoom : public Callback_ChatServer_getRoom_Base, public ::IceInternal::TwowayCallbackNC<T>
 {
 public:
 
@@ -3934,7 +3934,7 @@ public:
     typedef void (T::*Sent)(bool);
     typedef void (T::*Response)(const ChatRoomPrx&);
 
-    CallbackNC_chatServer_getRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    CallbackNC_ChatServer_getRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
     {
     }
@@ -3942,7 +3942,7 @@ public:
     /// \cond INTERNAL
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        chatServerPrx proxy = chatServerPrx::uncheckedCast(result->getProxy());
+        ChatServerPrx proxy = ChatServerPrx::uncheckedCast(result->getProxy());
         ChatRoomPrx ret;
         try
         {
@@ -3971,12 +3971,12 @@ private:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRoom.
  */
-template<class T> Callback_chatServer_getRoomPtr
-newCallback_chatServer_getRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_getRoomPtr
+newCallback_ChatServer_getRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_getRoom<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_getRoom<T>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -3985,21 +3985,21 @@ newCallback_chatServer_getRoom(const IceUtil::Handle<T>& instance, void (T::*cb)
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRoom.
  */
-template<class T> Callback_chatServer_getRoomPtr
-newCallback_chatServer_getRoom(T* instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_getRoomPtr
+newCallback_ChatServer_getRoom(T* instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_getRoom<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_getRoom<T>(instance, cb, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class with cookie support used for calls to
- * IceProxy::chat::chatServer::begin_getRoom.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_getRoom.
+ * IceProxy::chat::ChatServer::begin_getRoom.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_getRoom.
  */
 template<class T, typename CT>
-class Callback_chatServer_getRoom : public Callback_chatServer_getRoom_Base, public ::IceInternal::TwowayCallback<T, CT>
+class Callback_ChatServer_getRoom : public Callback_ChatServer_getRoom_Base, public ::IceInternal::TwowayCallback<T, CT>
 {
 public:
 
@@ -4009,7 +4009,7 @@ public:
     typedef void (T::*Sent)(bool , const CT&);
     typedef void (T::*Response)(const ChatRoomPrx&, const CT&);
 
-    Callback_chatServer_getRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    Callback_ChatServer_getRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
     {
     }
@@ -4017,7 +4017,7 @@ public:
     /// \cond INTERNAL
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        chatServerPrx proxy = chatServerPrx::uncheckedCast(result->getProxy());
+        ChatServerPrx proxy = ChatServerPrx::uncheckedCast(result->getProxy());
         ChatRoomPrx ret;
         try
         {
@@ -4047,12 +4047,12 @@ private:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRoom.
  */
-template<class T, typename CT> Callback_chatServer_getRoomPtr
-newCallback_chatServer_getRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_getRoomPtr
+newCallback_ChatServer_getRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_getRoom<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_getRoom<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4062,21 +4062,21 @@ newCallback_chatServer_getRoom(const IceUtil::Handle<T>& instance, void (T::*cb)
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_getRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_getRoom.
  */
-template<class T, typename CT> Callback_chatServer_getRoomPtr
-newCallback_chatServer_getRoom(T* instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_getRoomPtr
+newCallback_ChatServer_getRoom(T* instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_getRoom<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_getRoom<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class used for calls to
- * IceProxy::chat::chatServer::begin_newChatRoom.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_newChatRoom.
+ * IceProxy::chat::ChatServer::begin_newChatRoom.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_newChatRoom.
  */
 template<class T>
-class CallbackNC_chatServer_newChatRoom : public Callback_chatServer_newChatRoom_Base, public ::IceInternal::TwowayCallbackNC<T>
+class CallbackNC_ChatServer_newChatRoom : public Callback_ChatServer_newChatRoom_Base, public ::IceInternal::TwowayCallbackNC<T>
 {
 public:
 
@@ -4086,7 +4086,7 @@ public:
     typedef void (T::*Sent)(bool);
     typedef void (T::*Response)(const ChatRoomPrx&);
 
-    CallbackNC_chatServer_newChatRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    CallbackNC_ChatServer_newChatRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
     {
     }
@@ -4094,7 +4094,7 @@ public:
     /// \cond INTERNAL
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        chatServerPrx proxy = chatServerPrx::uncheckedCast(result->getProxy());
+        ChatServerPrx proxy = ChatServerPrx::uncheckedCast(result->getProxy());
         ChatRoomPrx ret;
         try
         {
@@ -4123,12 +4123,12 @@ private:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_newChatRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_newChatRoom.
  */
-template<class T> Callback_chatServer_newChatRoomPtr
-newCallback_chatServer_newChatRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_newChatRoomPtr
+newCallback_ChatServer_newChatRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_newChatRoom<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_newChatRoom<T>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4137,21 +4137,21 @@ newCallback_chatServer_newChatRoom(const IceUtil::Handle<T>& instance, void (T::
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_newChatRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_newChatRoom.
  */
-template<class T> Callback_chatServer_newChatRoomPtr
-newCallback_chatServer_newChatRoom(T* instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_newChatRoomPtr
+newCallback_ChatServer_newChatRoom(T* instance, void (T::*cb)(const ChatRoomPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_newChatRoom<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_newChatRoom<T>(instance, cb, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class with cookie support used for calls to
- * IceProxy::chat::chatServer::begin_newChatRoom.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_newChatRoom.
+ * IceProxy::chat::ChatServer::begin_newChatRoom.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_newChatRoom.
  */
 template<class T, typename CT>
-class Callback_chatServer_newChatRoom : public Callback_chatServer_newChatRoom_Base, public ::IceInternal::TwowayCallback<T, CT>
+class Callback_ChatServer_newChatRoom : public Callback_ChatServer_newChatRoom_Base, public ::IceInternal::TwowayCallback<T, CT>
 {
 public:
 
@@ -4161,7 +4161,7 @@ public:
     typedef void (T::*Sent)(bool , const CT&);
     typedef void (T::*Response)(const ChatRoomPrx&, const CT&);
 
-    Callback_chatServer_newChatRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    Callback_ChatServer_newChatRoom(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
     {
     }
@@ -4169,7 +4169,7 @@ public:
     /// \cond INTERNAL
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        chatServerPrx proxy = chatServerPrx::uncheckedCast(result->getProxy());
+        ChatServerPrx proxy = ChatServerPrx::uncheckedCast(result->getProxy());
         ChatRoomPrx ret;
         try
         {
@@ -4199,12 +4199,12 @@ private:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_newChatRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_newChatRoom.
  */
-template<class T, typename CT> Callback_chatServer_newChatRoomPtr
-newCallback_chatServer_newChatRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_newChatRoomPtr
+newCallback_ChatServer_newChatRoom(const IceUtil::Handle<T>& instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_newChatRoom<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_newChatRoom<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4214,21 +4214,21 @@ newCallback_chatServer_newChatRoom(const IceUtil::Handle<T>& instance, void (T::
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_newChatRoom.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_newChatRoom.
  */
-template<class T, typename CT> Callback_chatServer_newChatRoomPtr
-newCallback_chatServer_newChatRoom(T* instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_newChatRoomPtr
+newCallback_ChatServer_newChatRoom(T* instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_newChatRoom<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_newChatRoom<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class used for calls to
- * IceProxy::chat::chatServer::begin_registerFactory.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_registerFactory.
+ * IceProxy::chat::ChatServer::begin_registerFactory.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_registerFactory.
  */
 template<class T>
-class CallbackNC_chatServer_registerFactory : public Callback_chatServer_registerFactory_Base, public ::IceInternal::OnewayCallbackNC<T>
+class CallbackNC_ChatServer_registerFactory : public Callback_ChatServer_registerFactory_Base, public ::IceInternal::OnewayCallbackNC<T>
 {
 public:
 
@@ -4238,7 +4238,7 @@ public:
     typedef void (T::*Sent)(bool);
     typedef void (T::*Response)();
 
-    CallbackNC_chatServer_registerFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    CallbackNC_ChatServer_registerFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
     {
     }
@@ -4250,12 +4250,12 @@ public:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_registerFactory<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_registerFactory<T>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4263,12 +4263,12 @@ newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void 
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_registerFactory<T>(instance, 0, excb, sentcb);
+    return new CallbackNC_ChatServer_registerFactory<T>(instance, 0, excb, sentcb);
 }
 
 /**
@@ -4277,12 +4277,12 @@ newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void 
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_registerFactory<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_registerFactory<T>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4290,21 +4290,21 @@ newCallback_chatServer_registerFactory(T* instance, void (T::*cb)(), void (T::*e
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_registerFactory<T>(instance, 0, excb, sentcb);
+    return new CallbackNC_ChatServer_registerFactory<T>(instance, 0, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class with cookie support used for calls to
- * IceProxy::chat::chatServer::begin_registerFactory.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_registerFactory.
+ * IceProxy::chat::ChatServer::begin_registerFactory.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_registerFactory.
  */
 template<class T, typename CT>
-class Callback_chatServer_registerFactory : public Callback_chatServer_registerFactory_Base, public ::IceInternal::OnewayCallback<T, CT>
+class Callback_ChatServer_registerFactory : public Callback_ChatServer_registerFactory_Base, public ::IceInternal::OnewayCallback<T, CT>
 {
 public:
 
@@ -4314,7 +4314,7 @@ public:
     typedef void (T::*Sent)(bool , const CT&);
     typedef void (T::*Response)(const CT&);
 
-    Callback_chatServer_registerFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    Callback_ChatServer_registerFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
     {
     }
@@ -4327,12 +4327,12 @@ public:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T, typename CT> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_registerFactory<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_registerFactory<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4341,12 +4341,12 @@ newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void 
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T, typename CT> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_registerFactory<T, CT>(instance, 0, excb, sentcb);
+    return new Callback_ChatServer_registerFactory<T, CT>(instance, 0, excb, sentcb);
 }
 
 /**
@@ -4356,12 +4356,12 @@ newCallback_chatServer_registerFactory(const IceUtil::Handle<T>& instance, void 
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T, typename CT> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_registerFactory<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_registerFactory<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4370,21 +4370,21 @@ newCallback_chatServer_registerFactory(T* instance, void (T::*cb)(const CT&), vo
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_registerFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_registerFactory.
  */
-template<class T, typename CT> Callback_chatServer_registerFactoryPtr
-newCallback_chatServer_registerFactory(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_registerFactoryPtr
+newCallback_ChatServer_registerFactory(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_registerFactory<T, CT>(instance, 0, excb, sentcb);
+    return new Callback_ChatServer_registerFactory<T, CT>(instance, 0, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class used for calls to
- * IceProxy::chat::chatServer::begin_unregisterFactory.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_unregisterFactory.
+ * IceProxy::chat::ChatServer::begin_unregisterFactory.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_unregisterFactory.
  */
 template<class T>
-class CallbackNC_chatServer_unregisterFactory : public Callback_chatServer_unregisterFactory_Base, public ::IceInternal::OnewayCallbackNC<T>
+class CallbackNC_ChatServer_unregisterFactory : public Callback_ChatServer_unregisterFactory_Base, public ::IceInternal::OnewayCallbackNC<T>
 {
 public:
 
@@ -4394,7 +4394,7 @@ public:
     typedef void (T::*Sent)(bool);
     typedef void (T::*Response)();
 
-    CallbackNC_chatServer_unregisterFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    CallbackNC_ChatServer_unregisterFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
     {
     }
@@ -4406,12 +4406,12 @@ public:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_unregisterFactory<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_unregisterFactory<T>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4419,12 +4419,12 @@ newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, voi
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_unregisterFactory<T>(instance, 0, excb, sentcb);
+    return new CallbackNC_ChatServer_unregisterFactory<T>(instance, 0, excb, sentcb);
 }
 
 /**
@@ -4433,12 +4433,12 @@ newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, voi
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_unregisterFactory<T>(instance, cb, excb, sentcb);
+    return new CallbackNC_ChatServer_unregisterFactory<T>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4446,21 +4446,21 @@ newCallback_chatServer_unregisterFactory(T* instance, void (T::*cb)(), void (T::
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+template<class T> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
-    return new CallbackNC_chatServer_unregisterFactory<T>(instance, 0, excb, sentcb);
+    return new CallbackNC_ChatServer_unregisterFactory<T>(instance, 0, excb, sentcb);
 }
 
 /**
  * Type-safe asynchronous callback wrapper class with cookie support used for calls to
- * IceProxy::chat::chatServer::begin_unregisterFactory.
- * Create a wrapper instance by calling ::chat::newCallback_chatServer_unregisterFactory.
+ * IceProxy::chat::ChatServer::begin_unregisterFactory.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatServer_unregisterFactory.
  */
 template<class T, typename CT>
-class Callback_chatServer_unregisterFactory : public Callback_chatServer_unregisterFactory_Base, public ::IceInternal::OnewayCallback<T, CT>
+class Callback_ChatServer_unregisterFactory : public Callback_ChatServer_unregisterFactory_Base, public ::IceInternal::OnewayCallback<T, CT>
 {
 public:
 
@@ -4470,7 +4470,7 @@ public:
     typedef void (T::*Sent)(bool , const CT&);
     typedef void (T::*Response)(const CT&);
 
-    Callback_chatServer_unregisterFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+    Callback_ChatServer_unregisterFactory(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
     {
     }
@@ -4483,12 +4483,12 @@ public:
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T, typename CT> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_unregisterFactory<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_unregisterFactory<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4497,12 +4497,12 @@ newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, voi
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T, typename CT> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_unregisterFactory<T, CT>(instance, 0, excb, sentcb);
+    return new Callback_ChatServer_unregisterFactory<T, CT>(instance, 0, excb, sentcb);
 }
 
 /**
@@ -4512,12 +4512,12 @@ newCallback_chatServer_unregisterFactory(const IceUtil::Handle<T>& instance, voi
  * @param cb The success method of the callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T, typename CT> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_unregisterFactory<T, CT>(instance, cb, excb, sentcb);
+    return new Callback_ChatServer_unregisterFactory<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
@@ -4526,12 +4526,12 @@ newCallback_chatServer_unregisterFactory(T* instance, void (T::*cb)(const CT&), 
  * @param instance The callback object.
  * @param excb The exception method of the callback object.
  * @param sentcb The sent method of the callback object.
- * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::chatServer::begin_unregisterFactory.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatServer::begin_unregisterFactory.
  */
-template<class T, typename CT> Callback_chatServer_unregisterFactoryPtr
-newCallback_chatServer_unregisterFactory(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+template<class T, typename CT> Callback_ChatServer_unregisterFactoryPtr
+newCallback_ChatServer_unregisterFactory(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
-    return new Callback_chatServer_unregisterFactory<T, CT>(instance, 0, excb, sentcb);
+    return new Callback_ChatServer_unregisterFactory<T, CT>(instance, 0, excb, sentcb);
 }
 
 }

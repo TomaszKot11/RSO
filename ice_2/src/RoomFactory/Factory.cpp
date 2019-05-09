@@ -17,7 +17,7 @@ namespace RoomFactory {
             iceCommunicator = Ice::initialize();
             int serverPort = portsUtil.getServerPort();
             Ice::ObjectPrx base = iceCommunicator->stringToProxy("Server:default -p " + to_string(serverPort));
-            server = chatServerPrx::checkedCast(base);
+            server = ChatServerPrx::checkedCast(base);
             if (!server) {
                 throw "Invalid proxy";
             }

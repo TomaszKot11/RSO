@@ -28,7 +28,7 @@
           private:
             string username;
             UserPrx user;
-            chatServerPrx server;
+            ChatServerPrx server;
             Ice::CommunicatorPtr iceCommunicator;
             Ice::ObjectAdapterPtr adapter;
             PortsUtil portsUtil;
