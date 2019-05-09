@@ -1,11 +1,11 @@
-#include "RoomImpl.h"
+#include "ChatRoomImpl.h"
 
 namespace LibsIce {
-    UserList RoomImpl::listUsers(const ::Ice::Current&) {
+    UserList ChatRoomImpl::listUsers(const ::Ice::Current&) {
         return users;
     }
 
-    void RoomImpl::join(const string& nick, const UserPrx& who,  const ::Ice::Current&) {
+    void ChatRoomImpl::join(const string& nick, const UserPrx& who,  const ::Ice::Current&) {
         for(auto const& value: users) {
           if(value == nick)
             throw NameAlreadyExists();
@@ -15,7 +15,7 @@ namespace LibsIce {
         nickUserDictionary[nick] = who;
     }
 
-    void RoomImpl::Leave(const string& nick, const ::Ice::Current&) {
+    void ChatRoomImpl::Leave(const string& nick, const ::Ice::Current&) {
        // check if exists
        bool userExists = false;
        auto counter = users.begin();
@@ -36,7 +36,7 @@ namespace LibsIce {
       cout << "Removed user: " << nick << " from room" << endl;
     }
 
-    UserPrx RoomImpl::getUser(const string& nick, const ::Ice::Current&) {
+    UserPrx ChatRoomImpl::getUser(const string& nick, const ::Ice::Current&) {
        // check if exists
        for(auto const& value: users) {
           if(value == nick) {
@@ -47,7 +47,7 @@ namespace LibsIce {
       throw NoSuchUser();
     }
 
-    void RoomImpl::postMessage(const string& message,
+    void ChatRoomImpl::postMessage(const string& message,
                               const string& fromWho,
                                const ::Ice::Current&) {
        bool fromWhoPresent = false;

@@ -3,7 +3,7 @@
 
     #include <Ice/Ice.h>
     #include "chat.h"
-    #include "RoomFactoryImpl.h"
+    #include "ChatRoomFactoryImpl.h"
     #include "PortsUtil.h"
 
     using namespace std;

@@ -1,5 +1,5 @@
-#ifndef SERVER_IMPL_H
-    #define SERVER_IMPL_H
+#ifndef CHAT_SERVER_IMPL_H
+    #define CHAT_SERVER_IMPL_H
 
     #include <random>
     #include <iterator>
@@ -12,9 +12,9 @@
     using namespace std;
 
     namespace LibsIce {
-        class ServerImpl : public virtual chatServer {
+        class ChatServerImpl : public virtual chatServer {
             public:
-                ServerImpl();
+                ChatServerImpl();
                 virtual void registerFactory(const ChatRoomFactoryPrx&,
                                                  const ::Ice::Current& = ::Ice::Current()) override;
                 virtual void unregisterFactory(const ChatRoomFactoryPrx&,
@@ -24,7 +24,7 @@
                 virtual RoomList getRooms(const ::Ice::Current& = ::Ice::Current()) override;
                 virtual ChatRoomPrx getRoom(const string&,
                                          const ::Ice::Current& = ::Ice::Current()) override;
-                ~ServerImpl();
+                ~ChatServerImpl();
             private:
                 RoomList roomList;
                 RoomFactoryList roomFactoryList;

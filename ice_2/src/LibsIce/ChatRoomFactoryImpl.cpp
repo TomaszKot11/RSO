@@ -1,8 +1,8 @@
-#include "RoomFactoryImpl.h"
+#include "ChatRoomFactoryImpl.h"
 
 namespace LibsIce {
-    ChatRoomPrx RoomFactoryImpl::newChatRoom(const string& name, const ::Ice::Current&) {
-        ChatRoomPtr object = new RoomImpl(name);
+    ChatRoomPrx ChatRoomFactoryImpl::newChatRoom(const string& name, const ::Ice::Current&) {
+        ChatRoomPtr object = new ChatRoomImpl(name);
         cout << "RoomFactory::Creating room " << name << endl;
         int port = portsUtil.getRandomPort();
 
@@ -16,11 +16,11 @@ namespace LibsIce {
         return room;
     }
 
-    RoomFactoryImpl::RoomFactoryImpl() {
+    ChatRoomFactoryImpl::ChatRoomFactoryImpl() {
         ic = Ice::initialize();
     }
 
-    RoomFactoryImpl::~RoomFactoryImpl() {
+    ChatRoomFactoryImpl::~ChatRoomFactoryImpl() {
         if (ic) {
             try {
                 ic->destroy();

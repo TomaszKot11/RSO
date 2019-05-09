@@ -1,5 +1,5 @@
 #include "Client.h"
-#include "ServerImpl.h"
+#include "ChatServerImpl.h"
 #include "Menu.h"
 
 using namespace std;

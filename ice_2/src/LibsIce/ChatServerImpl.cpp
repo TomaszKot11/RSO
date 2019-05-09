@@ -1,13 +1,13 @@
-#include "ServerImpl.h"
-#include "RoomImpl.h"
+#include "ChatServerImpl.h"
+#include "ChatRoomImpl.h"
 
 namespace LibsIce {
 
-    ServerImpl::ServerImpl() {
+    ChatServerImpl::ChatServerImpl() {
         ic = Ice::initialize();
     }
 
-    ServerImpl::~ServerImpl() {
+    ChatServerImpl::~ChatServerImpl() {
         if (ic) {
             try {
                 ic->destroy();
@@ -18,7 +18,7 @@ namespace LibsIce {
     }
 
 
-    ChatRoomPrx ServerImpl::newChatRoom(const string& name, const ::Ice::Current&) {
+    ChatRoomPrx ChatServerImpl::newChatRoom(const string& name, const ::Ice::Current&) {
         // check if the room is not already present
         for (auto &room : roomList) {
             if (room.name == name) {
@@ -29,7 +29,7 @@ namespace LibsIce {
         //TODO random select room factory
         if (roomFactoryList.empty()) {
             // if empty - create some factory
-            ChatRoomFactoryPtr object = new RoomFactoryImpl();
+            ChatRoomFactoryPtr object = new ChatRoomFactoryImpl();
             int port = portsUtil.getRandomPort();
             string name = "One";
             ic = Ice::initialize();
@@ -60,11 +60,11 @@ namespace LibsIce {
         return room;
     }
 
-    RoomList ServerImpl::getRooms(const ::Ice::Current&) {
+    RoomList ChatServerImpl::getRooms(const ::Ice::Current&) {
         return roomList;
     }
 
-    ChatRoomPrx ServerImpl::getRoom(const string& name, const ::Ice::Current& ) {
+    ChatRoomPrx ChatServerImpl::getRoom(const string& name, const ::Ice::Current& ) {
         for (auto &room : roomList) {
             cout<<"Room name: " << room.name<<" room given: " << name << endl;
             if (room.name == name) {
@@ -76,12 +76,12 @@ namespace LibsIce {
         throw NoSuchRoom();
     }
 
-    void ServerImpl::registerFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+    void ChatServerImpl::registerFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
         roomFactoryList.push_back(roomFactory);
         cout << "Room factory registred " << endl;
     }
 
-    void ServerImpl::unregisterFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+    void ChatServerImpl::unregisterFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
         for (auto registredFactoryIt = roomFactoryList.begin(); registredFactoryIt != roomFactoryList.end(); ) {
             if (*registredFactoryIt == roomFactory) {
                 registredFactoryIt = roomFactoryList.erase(registredFactoryIt);

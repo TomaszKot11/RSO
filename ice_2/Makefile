@@ -12,9 +12,9 @@ LIBSICE = src/LibsIce
 ICEDIR = ice
 
 INCLUDES = -I $(CLIENTSRCDIR) -I $(ICEDIR) -I $(LIBSICE) -I $(SERVERSRCDIR) -I $(FACTORYSRCDIR)
-SRCICE = $(ICEDIR)/chat.cpp $(LIBSICE)/UserImpl.cpp $(LIBSICE)/ServerImpl.cpp $(LIBSICE)/RoomFactoryImpl.cpp $(LIBSICE)/RoomImpl.cpp
+SRCICE = $(ICEDIR)/chat.cpp $(LIBSICE)/UserImpl.cpp $(LIBSICE)/ChatServerImpl.cpp $(LIBSICE)/ChatRoomFactoryImpl.cpp $(LIBSICE)/ChatRoomImpl.cpp
 SRCSCLIENT = $(SRCICE) $(CLIENTSRCDIR)/Client.cpp  $(CLIENTSRCDIR)/main.cpp $(CLIENTSRCDIR)/Menu.cpp
-SRCSSERVER = $(SRCICE) $(SERVERSRCDIR)/Server.cpp
+SRCSSERVER = $(SRCICE) $(SERVERSRCDIR)/server_runner.cpp
 SRCFACTORY = $(SRCICE) $(FACTORYSRCDIR)/main.cpp $(FACTORYSRCDIR)/Factory.cpp
 SRC = $(SRCSCLIENT) $(SRCSSERVER)
 

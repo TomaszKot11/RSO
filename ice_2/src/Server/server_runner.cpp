@@ -1,6 +1,6 @@
 #include <Ice/Ice.h>
 #include "chat.h"
-#include "ServerImpl.h"
+#include "ChatServerImpl.h"
 #include "PortsUtil.h"
 
 using namespace std;
@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
         iceCommunicator = Ice::initialize(argc, argv);
         int serverPort = portsUtil.getServerPort();
         Ice::ObjectAdapterPtr adapter = iceCommunicator->createObjectAdapterWithEndpoints("ServerAdapter", "default -p " + to_string(serverPort));
-        Ice::ObjectPtr object = new ServerImpl();
+        Ice::ObjectPtr object = new ChatServerImpl();
         adapter->add(object, Ice::stringToIdentity("Server"));
         adapter->activate();
         iceCommunicator->waitForShutdown();
