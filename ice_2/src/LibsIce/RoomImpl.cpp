@@ -2,7 +2,6 @@
 
 namespace LibsIce {
     UserList RoomImpl::listUsers(const ::Ice::Current&) {
-        cout<<"Returning users"<<endl;
         return users;
     }
 
@@ -23,7 +22,6 @@ namespace LibsIce {
 
        for(auto usersIterator = users.begin(); usersIterator != users.end(); ++usersIterator) {
           if(*(usersIterator) == nick) {
-            cout<<"witam2"<<endl;
             userExists = true;
           }
         }
@@ -41,11 +39,12 @@ namespace LibsIce {
     UserPrx RoomImpl::getUser(const string& nick, const ::Ice::Current&) {
        // check if exists
        for(auto const& value: users) {
-          if(value == nick)
-            throw NameAlreadyExists();
+          if(value == nick) {
+            return nickUserDictionary[nick];
+          }
         }
 
-      return nickUserDictionary[nick];
+      throw NoSuchUser();
     }
 
     void RoomImpl::postMessage(const string& message,
@@ -63,7 +62,7 @@ namespace LibsIce {
 
       auto it = nickUserDictionary.begin();
       while (it != nickUserDictionary.end()) {
-      // Accessing VALUE from element pointed by it.
+        // Accessing VALUE from element pointed by it.
         it->second ->sendMessage(message, fromWho);
         it++;
       }

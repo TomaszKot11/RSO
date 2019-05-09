@@ -66,8 +66,11 @@ namespace LibsIce {
 
     ChatRoomPrx ServerImpl::getRoom(const string& name, const ::Ice::Current& ) {
         for (auto &room : roomList) {
-            if (room.name == name)
+            cout<<"Room name: " << room.name<<" room given: " << name << endl;
+            if (room.name == name) {
+                cout<<"Returning chat room proxy!"<<endl;
                 return nameChatDictionary[room.name];
+            }
         }
 
         throw NoSuchRoom();
