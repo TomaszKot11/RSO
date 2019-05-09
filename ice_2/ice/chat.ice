@@ -21,7 +21,7 @@ interface User {
   void sendPrivateMessage(string message, string fromWho);
    // added
    // TODO: is this necessary?
-  string getName();
+  // string getName();
 };
 
 // added

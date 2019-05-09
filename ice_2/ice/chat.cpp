@@ -63,7 +63,6 @@ const ::std::string iceC_chat_User_ids[2] =
 };
 const ::std::string iceC_chat_User_ops[] =
 {
-    "getName",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -73,7 +72,6 @@ const ::std::string iceC_chat_User_ops[] =
 };
 const ::std::string iceC_chat_User_sendMessage_name = "sendMessage";
 const ::std::string iceC_chat_User_sendPrivateMessage_name = "sendPrivateMessage";
-const ::std::string iceC_chat_User_getName_name = "getName";
 
 const ::std::string iceC_chat_ChatRoom_ids[2] =
 {
@@ -241,23 +239,9 @@ chat::User::_iceD_sendPrivateMessage(::IceInternal::Incoming& inS, const ::Ice::
 
 /// \cond INTERNAL
 bool
-chat::User::_iceD_getName(::IceInternal::Incoming& inS, const ::Ice::Current& current)
-{
-    _iceCheckMode(::Ice::OperationMode::Normal, current.mode);
-    inS.readEmptyParams();
-    ::std::string ret = this->getName(current);
-    auto ostr = inS.startWriteParams();
-    ostr->writeAll(ret);
-    inS.endWriteParams();
-    return true;
-}
-/// \endcond
-
-/// \cond INTERNAL
-bool
 chat::User::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_User_ops, iceC_chat_User_ops + 7, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_User_ops, iceC_chat_User_ops + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -267,29 +251,25 @@ chat::User::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& curr
     {
         case 0:
         {
-            return _iceD_getName(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 1:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 2:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_isA(in, current);
         }
         case 3:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ping(in, current);
         }
         case 4:
         {
-            return _iceD_ice_ping(in, current);
-        }
-        case 5:
-        {
             return _iceD_sendMessage(in, current);
         }
-        case 6:
+        case 5:
         {
             return _iceD_sendPrivateMessage(in, current);
         }
@@ -732,17 +712,6 @@ chat::UserPrx::_iceI_sendPrivateMessage(const ::std::shared_ptr<::IceInternal::O
 /// \endcond
 
 /// \cond INTERNAL
-void
-chat::UserPrx::_iceI_getName(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::string>>& outAsync, const ::Ice::Context& context)
-{
-    _checkTwowayOnly(iceC_chat_User_getName_name);
-    outAsync->invoke(iceC_chat_User_getName_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
-        nullptr,
-        nullptr);
-}
-/// \endcond
-
-/// \cond INTERNAL
 ::std::shared_ptr<::Ice::ObjectPrx>
 chat::UserPrx::_newInstance() const
 {
@@ -1006,8 +975,6 @@ namespace
 const ::std::string iceC_chat_User_sendMessage_name = "sendMessage";
 
 const ::std::string iceC_chat_User_sendPrivateMessage_name = "sendPrivateMessage";
-
-const ::std::string iceC_chat_User_getName_name = "getName";
 
 const ::std::string iceC_chat_ChatRoom_listUsers_name = "listUsers";
 
@@ -1291,46 +1258,6 @@ void
 IceProxy::chat::User::end_sendPrivateMessage(const ::Ice::AsyncResultPtr& result)
 {
     _end(result, iceC_chat_User_sendPrivateMessage_name);
-}
-
-::Ice::AsyncResultPtr
-IceProxy::chat::User::_iceI_begin_getName(const ::Ice::Context& context, const ::IceInternal::CallbackBasePtr& del, const ::Ice::LocalObjectPtr& cookie, bool sync)
-{
-    _checkTwowayOnly(iceC_chat_User_getName_name, sync);
-    ::IceInternal::OutgoingAsyncPtr result = new ::IceInternal::CallbackOutgoing(this, iceC_chat_User_getName_name, del, cookie, sync);
-    try
-    {
-        result->prepare(iceC_chat_User_getName_name, ::Ice::Normal, context);
-        result->writeEmptyParams();
-        result->invoke(iceC_chat_User_getName_name);
-    }
-    catch(const ::Ice::Exception& ex)
-    {
-        result->abort(ex);
-    }
-    return result;
-}
-
-::std::string
-IceProxy::chat::User::end_getName(const ::Ice::AsyncResultPtr& result)
-{
-    ::Ice::AsyncResult::_check(result, this, iceC_chat_User_getName_name);
-    ::std::string ret;
-    if(!result->_waitForResponse())
-    {
-        try
-        {
-            result->_throwUserException();
-        }
-        catch(const ::Ice::UserException& ex)
-        {
-            throw ::Ice::UnknownUserException(__FILE__, __LINE__, ex.ice_id());
-        }
-    }
-    ::Ice::InputStream* istr = result->_startReadParams();
-    istr->read(ret);
-    result->_endReadParams();
-    return ret;
 }
 
 /// \cond INTERNAL
@@ -1935,25 +1862,10 @@ chat::User::_iceD_sendPrivateMessage(::IceInternal::Incoming& inS, const ::Ice::
 }
 /// \endcond
 
-/// \cond INTERNAL
-bool
-chat::User::_iceD_getName(::IceInternal::Incoming& inS, const ::Ice::Current& current)
-{
-    _iceCheckMode(::Ice::Normal, current.mode);
-    inS.readEmptyParams();
-    ::std::string ret = this->getName(current);
-    ::Ice::OutputStream* ostr = inS.startWriteParams();
-    ostr->write(ret);
-    inS.endWriteParams();
-    return true;
-}
-/// \endcond
-
 namespace
 {
 const ::std::string iceC_chat_User_all[] =
 {
-    "getName",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -1968,7 +1880,7 @@ const ::std::string iceC_chat_User_all[] =
 bool
 chat::User::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_User_all, iceC_chat_User_all + 7, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_User_all, iceC_chat_User_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -1978,29 +1890,25 @@ chat::User::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& curr
     {
         case 0:
         {
-            return _iceD_getName(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 1:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 2:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_isA(in, current);
         }
         case 3:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ping(in, current);
         }
         case 4:
         {
-            return _iceD_ice_ping(in, current);
-        }
-        case 5:
-        {
             return _iceD_sendMessage(in, current);
         }
-        case 6:
+        case 5:
         {
             return _iceD_sendPrivateMessage(in, current);
         }

@@ -2,6 +2,7 @@
 
 using namespace std;
 using namespace chat;
+
 namespace ClientApp {
     void Client::createUser() {
         UserPtr object = new UserImpl(username);

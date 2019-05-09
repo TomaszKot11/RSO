@@ -1,10 +1,6 @@
 #include "UserImpl.h"
 
 namespace Shared {
-    string UserImpl::getName(const Ice::Current&) {
-        return name;
-    }
-
     void UserImpl::sendMessage(const string& message,
                               const string& fromWho,
                               const ::Ice::Current&) {

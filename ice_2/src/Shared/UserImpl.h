@@ -16,9 +16,6 @@
                 virtual void sendMessage(const string&,
                                          const string&,
                                          const ::Ice::Current& = ::Ice::Current()) override;
-
-
-                virtual string getName(const Ice::Current&) override;
                 virtual void sendPrivateMessage(const string&,
                                                 const string&,
                                                 const ::Ice::Current& = ::Ice::Current()) override;
