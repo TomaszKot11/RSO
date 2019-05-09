@@ -2,6 +2,7 @@
 
 namespace LibsIce {
     UserList RoomImpl::listUsers(const ::Ice::Current&) {
+        cout<<"Returning users"<<endl;
         return users;
     }
 
@@ -20,11 +21,11 @@ namespace LibsIce {
        bool userExists = false;
        auto counter = users.begin();
 
-       for(auto const& value: users) {
-          if(value == nick) {
+       for(auto usersIterator = users.begin(); usersIterator != users.end(); ++usersIterator) {
+          if(*(usersIterator) == nick) {
+            cout<<"witam2"<<endl;
             userExists = true;
           }
-          counter++;
         }
 
       if(!userExists)
