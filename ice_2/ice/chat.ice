@@ -19,13 +19,10 @@ sequence<string> UserList;
 interface User {
   void sendMessage(string message, string fromWho);
   void sendPrivateMessage(string message, string fromWho);
-   // added
-   // TODO: is this necessary?
-  // string getName();
 };
 
 // added
-dictionary<string, User*> NickUserDictinary;
+//dictionary<string, User*> NickUserDictinary;
 
 interface ChatRoom {
     UserList listUsers();
@@ -36,14 +33,14 @@ interface ChatRoom {
 };
 
 // added
-dictionary<string, ChatRoom*> NameChatRoomDictionary;
+//dictionary<string, ChatRoom*> NameChatRoomDictionary;
 
 interface ChatRoomFactory {
   ChatRoom* newChatRoom(string name);
 };
 
 // added
-sequence<ChatRoomFactory*> RoomFactoryList;
+//sequence<ChatRoomFactory*> RoomFactoryList;
 
 interface ChatServer {
   RoomList getRooms();

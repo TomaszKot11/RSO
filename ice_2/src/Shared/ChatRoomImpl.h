@@ -1,9 +1,10 @@
 #ifndef CHAT_ROOM_IMPL_H
     #define CHAT_ROOM_IMPL_H
 
-    #include "chat.h"
     #include <Ice/Ice.h>
+    #include "ProjectTypes.h"
     #include "PortsUtil.h"
+    #include "chat.h"
     #include "ChatRoomFactoryImpl.h"
 
     using namespace std;

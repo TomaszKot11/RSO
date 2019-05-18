@@ -26,7 +26,6 @@ namespace Shared {
             }
         }
 
-        //TODO random select room factory
         if (roomFactoryList.empty()) {
             // if empty - create some factory
             ChatRoomFactoryPtr object = new ChatRoomFactoryImpl();
@@ -41,9 +40,7 @@ namespace Shared {
             roomFactoryList.push_back(roomFactory);
 
             if(roomFactoryList.empty()) {
-              //TODO: throw something else
               throw "There is no room factories.";
-              // throw NameAlreadyExists();
             }
         }
 
@@ -77,11 +74,13 @@ namespace Shared {
     }
 
     void ChatServerImpl::registerFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+        //TODO: add mutex
         roomFactoryList.push_back(roomFactory);
         cout << "Room factory registred " << endl;
     }
 
     void ChatServerImpl::unregisterFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
+        // TODO: mutex
         for (auto registredFactoryIt = roomFactoryList.begin(); registredFactoryIt != roomFactoryList.end(); ) {
             if (*registredFactoryIt == roomFactory) {
                 registredFactoryIt = roomFactoryList.erase(registredFactoryIt);

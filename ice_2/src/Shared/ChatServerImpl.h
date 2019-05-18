@@ -4,6 +4,7 @@
     #include <random>
     #include <iterator>
     #include <Ice/Ice.h>
+    #include "ProjectTypes.h"
     #include "chat.h"
     #include "UserImpl.h"
     #include "PortsUtil.h"
@@ -26,6 +27,7 @@
                                          const ::Ice::Current& = ::Ice::Current()) override;
                 ~ChatServerImpl();
             private:
+                //TODO: chronienie przez mutex
                 RoomList roomList;
                 RoomFactoryList roomFactoryList;
                 PortsUtil portsUtil;
