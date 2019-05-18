@@ -26,25 +26,19 @@ namespace Shared {
             }
         }
 
-        if (roomFactoryList.empty()) {
-            // if empty - create some factory
-            ChatRoomFactoryPtr object = new ChatRoomFactoryImpl();
-            int port = portsUtil.getRandomPort();
-            string name = "One";
-            ic = Ice::initialize();
-            adapter = ic->createObjectAdapterWithEndpoints("SimpleFactory" + name, "default -p " + to_string(port));
-            adapter->add(object, Ice::stringToIdentity("SimpleFactory" + name));
-            adapter->activate();
-            Ice::ObjectPrx base = ic->stringToProxy("SimpleFactory" + name + ":default -p " + to_string(port));
-            ChatRoomFactoryPrx roomFactory = ChatRoomFactoryPrx::checkedCast(base);
-            roomFactoryList.push_back(roomFactory);
-
-            if(roomFactoryList.empty()) {
-              throw "There is no room factories.";
-            }
+        if(roomFactoryList.empty()) {
+            throw "There is no room factories.";
+        }
+           // std::min_element(roomFactoryList.begin(), roomFactoryList.end(), [] (ChatRoomFactoryPrx lhs, ChatRoomFactoryPrx rhs) {return lhs->getNumberOfRooms() < rhs->getNumberOfRooms(); });
+        cout<<"Factory number is: "<< roomFactoryList.size() <<endl;
+        int index = 0, min_index = 0, min = 0;
+        for(; index < roomFactoryList.size(); index++) {
+            if(min < roomFactoryList[index]->getNumberOfRooms())
+                min_index = index;
         }
 
-        ChatRoomFactoryPrx roomFactory = roomFactoryList.back();
+
+        ChatRoomFactoryPrx roomFactory = roomFactoryList[min_index];
         ChatRoomPrx room = roomFactory->newChatRoom(name);
         cout << "Creating room with name: " << name << endl;
         RoomInfo roomInfo;

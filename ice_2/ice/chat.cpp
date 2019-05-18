@@ -103,6 +103,7 @@ const ::std::string iceC_chat_ChatRoomFactory_ids[2] =
 };
 const ::std::string iceC_chat_ChatRoomFactory_ops[] =
 {
+    "getNumberOfRooms",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -110,6 +111,7 @@ const ::std::string iceC_chat_ChatRoomFactory_ops[] =
     "newChatRoom"
 };
 const ::std::string iceC_chat_ChatRoomFactory_newChatRoom_name = "newChatRoom";
+const ::std::string iceC_chat_ChatRoomFactory_getNumberOfRooms_name = "getNumberOfRooms";
 
 const ::std::string iceC_chat_ChatServer_ids[2] =
 {
@@ -486,9 +488,23 @@ chat::ChatRoomFactory::_iceD_newChatRoom(::IceInternal::Incoming& inS, const ::I
 
 /// \cond INTERNAL
 bool
+chat::ChatRoomFactory::_iceD_getNumberOfRooms(::IceInternal::Incoming& inS, const ::Ice::Current& current)
+{
+    _iceCheckMode(::Ice::OperationMode::Normal, current.mode);
+    inS.readEmptyParams();
+    int ret = this->getNumberOfRooms(current);
+    auto ostr = inS.startWriteParams();
+    ostr->writeAll(ret);
+    inS.endWriteParams();
+    return true;
+}
+/// \endcond
+
+/// \cond INTERNAL
+bool
 chat::ChatRoomFactory::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_ChatRoomFactory_ops, iceC_chat_ChatRoomFactory_ops + 5, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_ChatRoomFactory_ops, iceC_chat_ChatRoomFactory_ops + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -498,21 +514,25 @@ chat::ChatRoomFactory::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Cu
     {
         case 0:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_getNumberOfRooms(in, current);
         }
         case 1:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 2:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 3:
         {
-            return _iceD_ice_ping(in, current);
+            return _iceD_ice_isA(in, current);
         }
         case 4:
+        {
+            return _iceD_ice_ping(in, current);
+        }
+        case 5:
         {
             return _iceD_newChatRoom(in, current);
         }
@@ -845,6 +865,17 @@ chat::ChatRoomFactoryPrx::_iceI_newChatRoom(const ::std::shared_ptr<::IceInterna
 /// \endcond
 
 /// \cond INTERNAL
+void
+chat::ChatRoomFactoryPrx::_iceI_getNumberOfRooms(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<int>>& outAsync, const ::Ice::Context& context)
+{
+    _checkTwowayOnly(iceC_chat_ChatRoomFactory_getNumberOfRooms_name);
+    outAsync->invoke(iceC_chat_ChatRoomFactory_getNumberOfRooms_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
+        nullptr,
+        nullptr);
+}
+/// \endcond
+
+/// \cond INTERNAL
 ::std::shared_ptr<::Ice::ObjectPrx>
 chat::ChatRoomFactoryPrx::_newInstance() const
 {
@@ -987,6 +1018,8 @@ const ::std::string iceC_chat_ChatRoom_getUser_name = "getUser";
 const ::std::string iceC_chat_ChatRoom_Leave_name = "Leave";
 
 const ::std::string iceC_chat_ChatRoomFactory_newChatRoom_name = "newChatRoom";
+
+const ::std::string iceC_chat_ChatRoomFactory_getNumberOfRooms_name = "getNumberOfRooms";
 
 const ::std::string iceC_chat_ChatServer_getRooms_name = "getRooms";
 
@@ -1533,6 +1566,46 @@ IceProxy::chat::ChatRoomFactory::end_newChatRoom(const ::Ice::AsyncResultPtr& re
 {
     ::Ice::AsyncResult::_check(result, this, iceC_chat_ChatRoomFactory_newChatRoom_name);
     ::chat::ChatRoomPrx ret;
+    if(!result->_waitForResponse())
+    {
+        try
+        {
+            result->_throwUserException();
+        }
+        catch(const ::Ice::UserException& ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, ex.ice_id());
+        }
+    }
+    ::Ice::InputStream* istr = result->_startReadParams();
+    istr->read(ret);
+    result->_endReadParams();
+    return ret;
+}
+
+::Ice::AsyncResultPtr
+IceProxy::chat::ChatRoomFactory::_iceI_begin_getNumberOfRooms(const ::Ice::Context& context, const ::IceInternal::CallbackBasePtr& del, const ::Ice::LocalObjectPtr& cookie, bool sync)
+{
+    _checkTwowayOnly(iceC_chat_ChatRoomFactory_getNumberOfRooms_name, sync);
+    ::IceInternal::OutgoingAsyncPtr result = new ::IceInternal::CallbackOutgoing(this, iceC_chat_ChatRoomFactory_getNumberOfRooms_name, del, cookie, sync);
+    try
+    {
+        result->prepare(iceC_chat_ChatRoomFactory_getNumberOfRooms_name, ::Ice::Normal, context);
+        result->writeEmptyParams();
+        result->invoke(iceC_chat_ChatRoomFactory_getNumberOfRooms_name);
+    }
+    catch(const ::Ice::Exception& ex)
+    {
+        result->abort(ex);
+    }
+    return result;
+}
+
+::Ice::Int
+IceProxy::chat::ChatRoomFactory::end_getNumberOfRooms(const ::Ice::AsyncResultPtr& result)
+{
+    ::Ice::AsyncResult::_check(result, this, iceC_chat_ChatRoomFactory_getNumberOfRooms_name);
+    ::Ice::Int ret;
     if(!result->_waitForResponse())
     {
         try
@@ -2248,10 +2321,25 @@ chat::ChatRoomFactory::_iceD_newChatRoom(::IceInternal::Incoming& inS, const ::I
 }
 /// \endcond
 
+/// \cond INTERNAL
+bool
+chat::ChatRoomFactory::_iceD_getNumberOfRooms(::IceInternal::Incoming& inS, const ::Ice::Current& current)
+{
+    _iceCheckMode(::Ice::Normal, current.mode);
+    inS.readEmptyParams();
+    ::Ice::Int ret = this->getNumberOfRooms(current);
+    ::Ice::OutputStream* ostr = inS.startWriteParams();
+    ostr->write(ret);
+    inS.endWriteParams();
+    return true;
+}
+/// \endcond
+
 namespace
 {
 const ::std::string iceC_chat_ChatRoomFactory_all[] =
 {
+    "getNumberOfRooms",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -2265,7 +2353,7 @@ const ::std::string iceC_chat_ChatRoomFactory_all[] =
 bool
 chat::ChatRoomFactory::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_ChatRoomFactory_all, iceC_chat_ChatRoomFactory_all + 5, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_chat_ChatRoomFactory_all, iceC_chat_ChatRoomFactory_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -2275,21 +2363,25 @@ chat::ChatRoomFactory::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Cu
     {
         case 0:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_getNumberOfRooms(in, current);
         }
         case 1:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 2:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 3:
         {
-            return _iceD_ice_ping(in, current);
+            return _iceD_ice_isA(in, current);
         }
         case 4:
+        {
+            return _iceD_ice_ping(in, current);
+        }
+        case 5:
         {
             return _iceD_newChatRoom(in, current);
         }

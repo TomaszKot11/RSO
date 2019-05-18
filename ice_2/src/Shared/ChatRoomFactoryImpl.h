@@ -15,6 +15,7 @@
                 ChatRoomFactoryImpl();
                 virtual ChatRoomPrx newChatRoom(const string&,
                                            const ::Ice::Current& = ::Ice::Current()) override;
+                virtual int getNumberOfRooms(const ::Ice::Current& = ::Ice::Current()) override;
                 ~ChatRoomFactoryImpl();
             private:
                 RoomList roomList;

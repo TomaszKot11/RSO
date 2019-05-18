@@ -3,8 +3,7 @@
 using namespace RoomFactory;
 
 int main(int argc, char* argv[]) {
-    Factory factory;
-    factory.registerRoomFactory();
-
+    Factory factory_one, factory_two, factory_three;
+    factory_one.registerRoomFactory();
     return 0;
 }

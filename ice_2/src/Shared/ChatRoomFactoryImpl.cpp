@@ -20,6 +20,10 @@ namespace Shared {
         ic = Ice::initialize();
     }
 
+    int ChatRoomFactoryImpl::getNumberOfRooms(const ::Ice::Current&) {
+        return roomList.size();
+    }
+
     ChatRoomFactoryImpl::~ChatRoomFactoryImpl() {
         if (ic) {
             try {

@@ -21,9 +21,6 @@ interface User {
   void sendPrivateMessage(string message, string fromWho);
 };
 
-// added
-//dictionary<string, User*> NickUserDictinary;
-
 interface ChatRoom {
     UserList listUsers();
     void join(string nick, User* who) throws NickNotAvailable;
@@ -32,15 +29,11 @@ interface ChatRoom {
     void Leave(string name);
 };
 
-// added
-//dictionary<string, ChatRoom*> NameChatRoomDictionary;
-
 interface ChatRoomFactory {
   ChatRoom* newChatRoom(string name);
+  // added
+  int getNumberOfRooms();
 };
-
-// added
-//sequence<ChatRoomFactory*> RoomFactoryList;
 
 interface ChatServer {
   RoomList getRooms();

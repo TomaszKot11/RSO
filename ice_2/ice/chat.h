@@ -362,6 +362,11 @@ public:
     bool _iceD_newChatRoom(::IceInternal::Incoming&, const ::Ice::Current&);
     /// \endcond
 
+    virtual int getNumberOfRooms(const ::Ice::Current& current) = 0;
+    /// \cond INTERNAL
+    bool _iceD_getNumberOfRooms(::IceInternal::Incoming&, const ::Ice::Current&);
+    /// \endcond
+
     /// \cond INTERNAL
     virtual bool _iceDispatch(::IceInternal::Incoming&, const ::Ice::Current&) override;
     /// \endcond
@@ -685,6 +690,31 @@ public:
 
     /// \cond INTERNAL
     void _iceI_newChatRoom(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<ChatRoomPrx>>>&, const ::std::string&, const ::Ice::Context&);
+    /// \endcond
+
+    int getNumberOfRooms(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _makePromiseOutgoing<int>(true, this, &ChatRoomFactoryPrx::_iceI_getNumberOfRooms, context).get();
+    }
+
+    template<template<typename> class P = ::std::promise>
+    auto getNumberOfRoomsAsync(const ::Ice::Context& context = ::Ice::noExplicitContext)
+        -> decltype(::std::declval<P<int>>().get_future())
+    {
+        return _makePromiseOutgoing<int, P>(false, this, &ChatRoomFactoryPrx::_iceI_getNumberOfRooms, context);
+    }
+
+    ::std::function<void()>
+    getNumberOfRoomsAsync(::std::function<void(int)> response,
+                          ::std::function<void(::std::exception_ptr)> ex = nullptr,
+                          ::std::function<void(bool)> sent = nullptr,
+                          const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _makeLamdaOutgoing<int>(response, ex, sent, this, &chat::ChatRoomFactoryPrx::_iceI_getNumberOfRooms, context);
+    }
+
+    /// \cond INTERNAL
+    void _iceI_getNumberOfRooms(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<int>>&, const ::Ice::Context&);
     /// \endcond
 
     /**
@@ -1249,6 +1279,14 @@ typedef ::IceUtil::Handle< Callback_ChatRoomFactory_newChatRoom_Base> Callback_C
 
 /**
  * Base class for asynchronous callback wrapper classes used for calls to
+ * IceProxy::chat::ChatRoomFactory::begin_getNumberOfRooms.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatRoomFactory_getNumberOfRooms.
+ */
+class Callback_ChatRoomFactory_getNumberOfRooms_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ChatRoomFactory_getNumberOfRooms_Base> Callback_ChatRoomFactory_getNumberOfRoomsPtr;
+
+/**
+ * Base class for asynchronous callback wrapper classes used for calls to
  * IceProxy::chat::ChatServer::begin_getRooms.
  * Create a wrapper instance by calling ::chat::newCallback_ChatServer_getRooms.
  */
@@ -1634,6 +1672,44 @@ public:
 private:
 
     ::Ice::AsyncResultPtr _iceI_begin_newChatRoom(const ::std::string&, const ::Ice::Context&, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& cookie = 0, bool sync = false);
+
+public:
+
+    ::Ice::Int getNumberOfRooms(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return end_getNumberOfRooms(_iceI_begin_getNumberOfRooms(context, ::IceInternal::dummyCallback, 0, true));
+    }
+
+    ::Ice::AsyncResultPtr begin_getNumberOfRooms(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _iceI_begin_getNumberOfRooms(context, ::IceInternal::dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getNumberOfRooms(const ::Ice::CallbackPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getNumberOfRooms(::Ice::noExplicitContext, cb, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getNumberOfRooms(const ::Ice::Context& context, const ::Ice::CallbackPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getNumberOfRooms(context, cb, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getNumberOfRooms(const ::chat::Callback_ChatRoomFactory_getNumberOfRoomsPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getNumberOfRooms(::Ice::noExplicitContext, cb, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getNumberOfRooms(const ::Ice::Context& context, const ::chat::Callback_ChatRoomFactory_getNumberOfRoomsPtr& cb, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getNumberOfRooms(context, cb, cookie);
+    }
+
+    ::Ice::Int end_getNumberOfRooms(const ::Ice::AsyncResultPtr& result);
+
+private:
+
+    ::Ice::AsyncResultPtr _iceI_begin_getNumberOfRooms(const ::Ice::Context&, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& cookie = 0, bool sync = false);
 
 public:
 
@@ -2061,6 +2137,11 @@ public:
     virtual ChatRoomPrx newChatRoom(const ::std::string& name, const ::Ice::Current& current = ::Ice::emptyCurrent) = 0;
     /// \cond INTERNAL
     bool _iceD_newChatRoom(::IceInternal::Incoming&, const ::Ice::Current&);
+    /// \endcond
+
+    virtual ::Ice::Int getNumberOfRooms(const ::Ice::Current& current = ::Ice::emptyCurrent) = 0;
+    /// \cond INTERNAL
+    bool _iceD_getNumberOfRooms(::IceInternal::Incoming&, const ::Ice::Current&);
     /// \endcond
 
     /// \cond INTERNAL
@@ -3519,6 +3600,158 @@ template<class T, typename CT> Callback_ChatRoomFactory_newChatRoomPtr
 newCallback_ChatRoomFactory_newChatRoom(T* instance, void (T::*cb)(const ChatRoomPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_ChatRoomFactory_newChatRoom<T, CT>(instance, cb, excb, sentcb);
+}
+
+/**
+ * Type-safe asynchronous callback wrapper class used for calls to
+ * IceProxy::chat::ChatRoomFactory::begin_getNumberOfRooms.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatRoomFactory_getNumberOfRooms.
+ */
+template<class T>
+class CallbackNC_ChatRoomFactory_getNumberOfRooms : public Callback_ChatRoomFactory_getNumberOfRooms_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(::Ice::Int);
+
+    CallbackNC_ChatRoomFactory_getNumberOfRooms(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    /// \cond INTERNAL
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        ChatRoomFactoryPrx proxy = ChatRoomFactoryPrx::uncheckedCast(result->getProxy());
+        ::Ice::Int ret;
+        try
+        {
+            ret = proxy->end_getNumberOfRooms(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(ret);
+        }
+    }
+    /// \endcond
+
+private:
+
+    Response _response;
+};
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatRoomFactory::begin_getNumberOfRooms.
+ */
+template<class T> Callback_ChatRoomFactory_getNumberOfRoomsPtr
+newCallback_ChatRoomFactory_getNumberOfRooms(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ChatRoomFactory_getNumberOfRooms<T>(instance, cb, excb, sentcb);
+}
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatRoomFactory::begin_getNumberOfRooms.
+ */
+template<class T> Callback_ChatRoomFactory_getNumberOfRoomsPtr
+newCallback_ChatRoomFactory_getNumberOfRooms(T* instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ChatRoomFactory_getNumberOfRooms<T>(instance, cb, excb, sentcb);
+}
+
+/**
+ * Type-safe asynchronous callback wrapper class with cookie support used for calls to
+ * IceProxy::chat::ChatRoomFactory::begin_getNumberOfRooms.
+ * Create a wrapper instance by calling ::chat::newCallback_ChatRoomFactory_getNumberOfRooms.
+ */
+template<class T, typename CT>
+class Callback_ChatRoomFactory_getNumberOfRooms : public Callback_ChatRoomFactory_getNumberOfRooms_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(::Ice::Int, const CT&);
+
+    Callback_ChatRoomFactory_getNumberOfRooms(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    /// \cond INTERNAL
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        ChatRoomFactoryPrx proxy = ChatRoomFactoryPrx::uncheckedCast(result->getProxy());
+        ::Ice::Int ret;
+        try
+        {
+            ret = proxy->end_getNumberOfRooms(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(ret, CT::dynamicCast(result->getCookie()));
+        }
+    }
+    /// \endcond
+
+private:
+
+    Response _response;
+};
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * Use this overload when your callback methods receive a cookie value.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatRoomFactory::begin_getNumberOfRooms.
+ */
+template<class T, typename CT> Callback_ChatRoomFactory_getNumberOfRoomsPtr
+newCallback_ChatRoomFactory_getNumberOfRooms(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ChatRoomFactory_getNumberOfRooms<T, CT>(instance, cb, excb, sentcb);
+}
+
+/**
+ * Creates a callback wrapper instance that delegates to your object.
+ * Use this overload when your callback methods receive a cookie value.
+ * @param instance The callback object.
+ * @param cb The success method of the callback object.
+ * @param excb The exception method of the callback object.
+ * @param sentcb The sent method of the callback object.
+ * @return An object that can be passed to an asynchronous invocation of IceProxy::chat::ChatRoomFactory::begin_getNumberOfRooms.
+ */
+template<class T, typename CT> Callback_ChatRoomFactory_getNumberOfRoomsPtr
+newCallback_ChatRoomFactory_getNumberOfRooms(T* instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ChatRoomFactory_getNumberOfRooms<T, CT>(instance, cb, excb, sentcb);
 }
 
 /**
