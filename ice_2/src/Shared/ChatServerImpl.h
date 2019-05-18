@@ -27,8 +27,8 @@
                                          const ::Ice::Current& = ::Ice::Current()) override;
                 ~ChatServerImpl();
             private:
-                //TODO: chronienie przez mutex
                 RoomList roomList;
+                mutex roomFactoryListMutex;
                 RoomFactoryList roomFactoryList;
                 PortsUtil portsUtil;
                 Ice::CommunicatorPtr ic;

@@ -68,13 +68,14 @@ namespace Shared {
     }
 
     void ChatServerImpl::registerFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
-        //TODO: add mutex
+        roomFactoryListMutex.lock();
         roomFactoryList.push_back(roomFactory);
+        roomFactoryListMutex.unlock();
         cout << "Room factory registred " << endl;
     }
 
     void ChatServerImpl::unregisterFactory(const ChatRoomFactoryPrx& roomFactory, const ::Ice::Current&) {
-        // TODO: mutex
+        roomFactoryListMutex.lock();
         for (auto registredFactoryIt = roomFactoryList.begin(); registredFactoryIt != roomFactoryList.end(); ) {
             if (*registredFactoryIt == roomFactory) {
                 registredFactoryIt = roomFactoryList.erase(registredFactoryIt);
@@ -82,5 +83,6 @@ namespace Shared {
                 ++registredFactoryIt;
             }
         }
+        roomFactoryListMutex.unlock();
     }
 }
